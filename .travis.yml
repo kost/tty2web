@@ -2,7 +2,8 @@ language: go
 
 before_install:
   - sudo apt-get update
-  - sudo apt-get install -y make go-dep
+  - sudo apt-get install -y make
+  - curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sudo sh
 
 go:
   - 1.9.x
