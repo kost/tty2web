@@ -34,35 +34,65 @@ Run `tty2web` with your preferred command as its arguments (e.g. `tty2web top`).
 
 By default, tty2web starts a web server at port 8080. Open the URL on your web browser and you can see the running command as if it were running on your terminal.
 
+# Example usage
+
+
+Bind mode is simple, specify port to listen and command to run (add -w if you want to interact):
+```
+tty2web --port 8081 top
+```
+Point your web browser to IP and port 8081 in order to see output of top. Add -w if you want to interact directly in the browser.
+
+
+For reverse mode, you need to start listener first:
+```
+tty2web --listen :4444 --server 127.0.0.1:8000 --password test
+```
+
+After having listener running, you can start client to connect to the listener:
+```
+tty2web --connect 192.168.1.1:4444 --password test -w /bin/sh
+```
+
+Point your web browser to http://127.0.0.1:8000
+
 ## Options
 
 ```
---address value, -a value     IP address to listen (default: "0.0.0.0") [$GOTTY_ADDRESS]
---port value, -p value        Port number to liten (default: "8080") [$GOTTY_PORT]
---permit-write, -w            Permit clients to write to the TTY (BE CAREFUL) [$GOTTY_PERMIT_WRITE]
---credential value, -c value  Credential for Basic Authentication (ex: user:pass, default disabled) [$GOTTY_CREDENTIAL]
---random-url, -r              Add a random string to the URL [$GOTTY_RANDOM_URL]
---random-url-length value     Random URL length (default: 8) [$GOTTY_RANDOM_URL_LENGTH]
---tls, -t                     Enable TLS/SSL [$GOTTY_TLS]
---tls-crt value               TLS/SSL certificate file path (default: "~/.gotty.crt") [$GOTTY_TLS_CRT]
---tls-key value               TLS/SSL key file path (default: "~/.gotty.key") [$GOTTY_TLS_KEY]
---tls-ca-crt value            TLS/SSL CA certificate file for client certifications (default: "~/.gotty.ca.crt") [$GOTTY_TLS_CA_CRT]
---index value                 Custom index.html file [$GOTTY_INDEX]
---title-format value          Title format of browser window (default: "{{ .command }}@{{ .hostname }}") [$GOTTY_TITLE_FORMAT]
---reconnect                   Enable reconnection [$GOTTY_RECONNECT]
---reconnect-time value        Time to reconnect (default: 10) [$GOTTY_RECONNECT_TIME]
---max-connection value        Maximum connection to gotty (default: 0) [$GOTTY_MAX_CONNECTION]
---once                        Accept only one client and exit on disconnection [$GOTTY_ONCE]
---timeout value               Timeout seconds for waiting a client(0 to disable) (default: 0) [$GOTTY_TIMEOUT]
---permit-arguments            Permit clients to send command line arguments in URL (e.g. http://example.com:8080/?arg=AAA&arg=BBB) [$GOTTY_PERMIT_ARGUMENTS]
---width value                 Static width of the screen, 0(default) means dynamically resize (default: 0) [$GOTTY_WIDTH]
---height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$GOTTY_HEIGHT]
---ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$GOTTY_WS_ORIGIN]
---term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$GOTTY_TERM]
---close-signal value          Signal sent to the command process when gotty close it (default: SIGHUP) (default: 1) [$GOTTY_CLOSE_SIGNAL]
---close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$GOTTY_CLOSE_TIMEOUT]
---config value                Config file path (default: "~/.gotty") [$GOTTY_CONFIG]
---version, -v                 print the version
+   --address value, -a value     IP address to listen (default: "0.0.0.0") [$TTY2WEB_ADDRESS]
+   --port value, -p value        Port number to listen (default: "8080") [$TTY2WEB_PORT]
+   --permit-write, -w            Permit clients to write to the TTY (BE CAREFUL) [$TTY2WEB_PERMIT_WRITE]
+   --credential value, -c value  Credential for Basic Authentication (ex: user:pass, default disabled) [$TTY2WEB_CREDENTIAL]
+   --random-url, -r              Add a random string to the URL [$TTY2WEB_RANDOM_URL]
+   --random-url-length value     Random URL length (default: 8) [$TTY2WEB_RANDOM_URL_LENGTH]
+   --tls, -t                     Enable TLS/SSL [$TTY2WEB_TLS]
+   --tls-crt value               TLS/SSL certificate file path (default: "~/.tty2web.crt") [$TTY2WEB_TLS_CRT]
+   --tls-key value               TLS/SSL key file path (default: "~/.tty2web.key") [$TTY2WEB_TLS_KEY]
+   --tls-ca-crt value            TLS/SSL CA certificate file for client certifications (default: "~/.tty2web.ca.crt") [$TTY2WEB_TLS_CA_CRT]
+   --index value                 Custom index.html file [$TTY2WEB_INDEX]
+   --title-format value          Title format of browser window (default: "{{ .command }}@{{ .hostname }}") [$TTY2WEB_TITLE_FORMAT]
+   --listen value                Listen for reverse connection (ex. 0.0.0.0:4444) [$TTY2WEB_LISTEN]
+   --listencert value            Certificate and key for listen server (ex. mycert) [$TTY2WEB_LISTENCERT]
+   --server value                Server for forwarding reverse connections (ex. 127.0.0.1:6000) (default: "127.0.0.1:6000") [$TTY2WEB_SERVER]
+   --password value              Password for reverse server connection [$TTY2WEB_PASSWORD]
+   --connect value               Connect to host for reverse connection (ex. 192.168.1.1:4444) [$TTY2WEB_CONNECT]
+   --proxy value                 Use proxy for reverse server connection (ex. 192.168.1.1:8080) [$TTY2WEB_PROXY]
+   --proxyauth value             Use proxy authentication for reverse server connection (ex. DOMAIN/user:password) [$TTY2WEB_PROXYAUTH]
+   --useragent value             Use user agent for reverse server connection (ex. Mozilla) [$TTY2WEB_USERAGENT]
+   --reconnect                   Enable reconnection [$TTY2WEB_RECONNECT]
+   --reconnect-time value        Time to reconnect (default: 10) [$TTY2WEB_RECONNECT_TIME]
+   --max-connection value        Maximum connection to gotty (default: 0) [$TTY2WEB_MAX_CONNECTION]
+   --once                        Accept only one client and exit on disconnection [$TTY2WEB_ONCE]
+   --timeout value               Timeout seconds for waiting a client(0 to disable) (default: 0) [$TTY2WEB_TIMEOUT]
+   --permit-arguments            Permit clients to send command line arguments in URL (e.g. http://example.com:8080/?arg=AAA&arg=BBB) [$TTY2WEB_PERMIT_ARGUMENTS]
+   --width value                 Static width of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_WIDTH]
+   --height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_HEIGHT]
+   --ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$TTY2WEB_WS_ORIGIN]
+   --term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$TTY2WEB_TERM]
+   --close-signal value          Signal sent to the command process when gotty close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
+   --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
+   --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
+   --version, -v                 print the version
 ```
 
 ### Config File
@@ -163,6 +193,16 @@ make
 ```
 
 To build the frontend part (JS files and other static files), you need `npm`.
+
+## Windows support
+
+There is limited Windows support because there is no proper pty support on Windows. Currently, only listening (bind) mode works and you will have most luck with specific programs. In testing, cmd.exe did not work, but powershell.exe works:
+
+```DOS .bat
+tty2web.exe -w powershell.exe
+```
+
+Some of the applications work better if you run it with winpty. Windows support is not my focus, but if you send me pull request, I would gladly accept it.
 
 ## Architecture
 
