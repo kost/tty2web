@@ -1,4 +1,5 @@
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+// const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
     entry: "./src/main.ts",
@@ -20,10 +21,27 @@ module.exports = {
                 test: /\.js$/,
                 include: /node_modules/,
                 loader: 'license-loader'
+            },
+            {
+                loader: 'babel-loader',
+                test: /\.js$/,
+                exclude: /node_modules/,
             }
         ]
     },
-    plugins: [
-        new UglifyJSPlugin()
-    ]
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    ecma: 6,
+                    compress: true,
+                    output: {
+                        comments: false,
+                        beautify: false
+                    }
+                }
+            })
+        ]
+    }
 };
