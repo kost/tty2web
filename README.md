@@ -82,7 +82,7 @@ Point your web browser to http://127.0.0.1:8000
    --useragent value             Use user agent for reverse server connection (ex. Mozilla) [$TTY2WEB_USERAGENT]
    --reconnect                   Enable reconnection [$TTY2WEB_RECONNECT]
    --reconnect-time value        Time to reconnect (default: 10) [$TTY2WEB_RECONNECT_TIME]
-   --max-connection value        Maximum connection to gotty (default: 0) [$TTY2WEB_MAX_CONNECTION]
+   --max-connection value        Maximum connection to tty2web (default: 0) [$TTY2WEB_MAX_CONNECTION]
    --once                        Accept only one client and exit on disconnection [$TTY2WEB_ONCE]
    --timeout value               Timeout seconds for waiting a client(0 to disable) (default: 0) [$TTY2WEB_TIMEOUT]
    --permit-arguments            Permit clients to send command line arguments in URL (e.g. http://example.com:8080/?arg=AAA&arg=BBB) [$TTY2WEB_PERMIT_ARGUMENTS]
@@ -90,7 +90,7 @@ Point your web browser to http://127.0.0.1:8000
    --height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_HEIGHT]
    --ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$TTY2WEB_WS_ORIGIN]
    --term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$TTY2WEB_TERM]
-   --close-signal value          Signal sent to the command process when gotty close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
+   --close-signal value          Signal sent to the command process when tty2web close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
    --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
    --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
    --version, -v                 print the version
@@ -115,20 +115,20 @@ preferences {
 }
 ```
 
-See the [`.gotty`](https://github.com/kost/tty2web/blob/master/.tty2web) file in this repository for the list of configuration options.
+See the [`.tty2web`](https://github.com/kost/tty2web/blob/master/.tty2web) file in this repository for the list of configuration options.
 
 ### Security Options
 
-By default, tty2web doesn't allow clients to send any keystrokes or commands except terminal window resizing. When you want to permit clients to write input to the TTY, add the `-w` option. However, accepting input from remote clients is dangerous for most commands. When you need interaction with the TTY for some reasons, consider starting GoTTY with tmux or GNU Screen and run your command on it (see "Sharing with Multiple Clients" section for detail).
+By default, tty2web doesn't allow clients to send any keystrokes or commands except terminal window resizing. When you want to permit clients to write input to the TTY, add the `-w` option. However, accepting input from remote clients is dangerous for most commands. When you need interaction with the TTY for some reasons, consider starting tty2web with tmux or GNU Screen and run your command on it (see "Sharing with Multiple Clients" section for detail).
 
-To restrict client access, you can use the `-c` option to enable the basic authentication. With this option, clients need to input the specified username and password to connect to the GoTTY server. Note that the credentical will be transmitted between the server and clients in plain text. For more strict authentication, consider the SSL/TLS client certificate authentication described below.
+To restrict client access, you can use the `-c` option to enable the basic authentication. With this option, clients need to input the specified username and password to connect to the tty2web server. Note that the credentical will be transmitted between the server and clients in plain text. For more strict authentication, consider the SSL/TLS client certificate authentication described below.
 
-The `-r` option is a little bit casualer way to restrict access. With this option, GoTTY generates a random URL so that only people who know the URL can get access to the server.  
+The `-r` option is a little bit casualer way to restrict access. With this option, tty2web generates a random URL so that only people who know the URL can get access to the server.
 
-All traffic between the server and clients are NOT encrypted by default. When you send secret information through GoTTY, we strongly recommend you use the `-t` option which enables TLS/SSL on the session. By default, GoTTY loads the crt and key files placed at `~/.gotty.crt` and `~/.gotty.key`. You can overwrite these file paths with the `--tls-crt` and `--tls-key` options. When you need to generate a self-signed certification file, you can use the `openssl` command.
+All traffic between the server and clients are NOT encrypted by default. When you send secret information through tty2web, we strongly recommend you use the `-t` option which enables TLS/SSL on the session. By default, tty2web loads the crt and key files placed at `~/.tty2web.crt` and `~/.tty2web.key`. You can overwrite these file paths with the `--tls-crt` and `--tls-key` options. When you need to generate a self-signed certification file, you can use the `openssl` command.
 
 ```sh
-openssl req -x509 -nodes -days 9999 -newkey rsa:2048 -keyout ~/.gotty.key -out ~/.gotty.crt
+openssl req -x509 -nodes -days 9999 -newkey rsa:2048 -keyout ~/.tty2web.key -out ~/.tty2web.crt
 ```
 
 (NOTE: For Safari uses, see [how to enable self-signed certificates for WebSockets](http://blog.marcon.me/post/24874118286/secure-websockets-safari) when use self-signed certificates)
@@ -139,10 +139,10 @@ For additional security, you can use the SSL/TLS client certificate authenticati
 
 tty2web starts a new process with the given command when a new client connects to the server. This means users cannot share a single terminal with others by default. However, you can use terminal multiplexers for sharing a single process with multiple clients.
 
-For example, you can start a new tmux session named `gotty` with `top` command by the command below.
+For example, you can start a new tmux session named `tty2web` with `top` command by the command below.
 
 ```sh
-$ gotty tmux new -A -s tty2web top
+$ tty2web tmux new -A -s tty2web top
 ```
 
 This command doesn't allow clients to send keystrokes, however, you can attach the session from your local terminal and run operations like switching the mode of the `top` command. To connect to the tmux session from your terminal, you can use following command.
