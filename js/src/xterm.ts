@@ -28,18 +28,20 @@ export class Xterm {
         this.message.className = "xterm-overlay";
         this.messageTimeout = 2000;
 
+
         this.resizeListener = () => {
             fitAddon.fit();
             this.term.scrollToBottom();
             this.showMessage(String(this.term.cols) + "x" + String(this.term.rows), this.messageTimeout);
         };
 
-        (<any>this).term.on("open", () => {
-            this.resizeListener();
-            window.addEventListener("resize", () => { this.resizeListener(); });
-        });
+        //(<any>this).term.on("open", () => {
+        //   this.resizeListener();
+        //    window.addEventListener("resize", () => { this.resizeListener(); });
+        // });
 
-        (<any>this).term.open(elem, true);
+        this.term.open(elem);
+	this.term.focus();
 
         this.decoder = new lib.UTF8Decoder()
     };
@@ -80,21 +82,18 @@ export class Xterm {
     };
 
     onInput(callback: (input: string) => void) {
-        (<any>this).term.on("data", (data) => {
+        this.term.onData(data => {
             callback(data);
         });
-
     };
 
-    onResize(callback: (colmuns: number, rows: number) => void) {
-        (<any>this).term.on("resize", (data) => {
-            callback(data.cols, data.rows);
-        });
+    onResize(callback: (columns: number, rows: number) => void) {
+	this.term.onResize(data => {
+        	callback(data.cols, data.rows);
+	});
     };
 
     deactivate(): void {
-        (<any>this).term.off("data");
-        (<any>this).term.off("resize");
         this.term.blur();
     }
 
@@ -105,6 +104,6 @@ export class Xterm {
 
     close(): void {
         window.removeEventListener("resize", this.resizeListener);
-        (<any>this).term.destroy();
+        this.term.dispose();
     }
 }

@@ -4,7 +4,7 @@ const TerserPlugin = require('terser-webpack-plugin');
 module.exports = {
     entry: "./src/main.ts",
     output: {
-        filename: "./dist/gotty-bundle.js"
+        filename: "./tty2web-bundle.js"
     },
     devtool: "source-map",
     resolve: {
