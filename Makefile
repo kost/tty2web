@@ -8,7 +8,7 @@ tty2web: main.go server/*.go webtty/*.go backend/*.go Makefile
 	go build ${BUILD_OPTIONS}
 
 .PHONY: asset
-asset: bindata/static/js/gotty-bundle.js bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css
+asset: bindata/static/js/tty2web-bundle.js bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css
 	go-bindata -prefix bindata -pkg server -ignore=\\.gitkeep -o server/asset.go bindata/...
 	gofmt -w server/asset.go
 
@@ -31,8 +31,8 @@ bindata/static/js: bindata/static
 	mkdir -p bindata/static/js
 
 
-bindata/static/js/gotty-bundle.js: bindata/static/js js/dist/gotty-bundle.js
-	cp js/dist/gotty-bundle.js bindata/static/js/gotty-bundle.js
+bindata/static/js/tty2web-bundle.js: bindata/static/js js/dist/tty2web-bundle.js
+	cp js/dist/tty2web-bundle.js bindata/static/js/tty2web-bundle.js
 
 bindata/static/css: bindata/static
 	mkdir -p bindata/static/css
@@ -43,14 +43,14 @@ bindata/static/css/index.css: bindata/static/css resources/index.css
 bindata/static/css/xterm_customize.css: bindata/static/css resources/xterm_customize.css
 	cp resources/xterm_customize.css bindata/static/css/xterm_customize.css
 
-bindata/static/css/xterm.css: bindata/static/css js/node_modules/xterm/dist/xterm.css
-	cp js/node_modules/xterm/dist/xterm.css bindata/static/css/xterm.css
+bindata/static/css/xterm.css: bindata/static/css js/node_modules/xterm/css/xterm.css
+	cp js/node_modules/xterm/css/xterm.css bindata/static/css/xterm.css
 
 js/node_modules/xterm/dist/xterm.css:
 	cd js && \
 	npm install
 
-js/dist/gotty-bundle.js: js/src/* js/node_modules/webpack
+js/dist/tty2web-bundle.js: js/src/* js/node_modules/webpack
 	cd js && \
 	`npm bin`/webpack
 
@@ -72,7 +72,7 @@ cross_compile:
 
 targz:
 	mkdir -p ${OUTPUT_DIR}/dist
-	cd ${OUTPUT_DIR}/pkg/; for osarch in *; do (cd $$osarch; tar zcvf ../../dist/gotty_${VERSION}_$$osarch.tar.gz ./*); done;
+	cd ${OUTPUT_DIR}/pkg/; for osarch in *; do (cd $$osarch; tar zcvf ../../dist/tty2web_${VERSION}_$$osarch.tar.gz ./*); done;
 
 shasums:
 	cd ${OUTPUT_DIR}/dist; sha256sum * > ./SHA256SUMS

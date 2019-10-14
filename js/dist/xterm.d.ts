@@ -1,8 +1,8 @@
-import * as bare from "xterm";
+import { Terminal } from 'xterm';
 import { lib } from "libapps";
 export declare class Xterm {
     elem: HTMLElement;
-    term: bare;
+    term: Terminal;
     resizeListener: () => void;
     decoder: lib.UTF8Decoder;
     message: HTMLElement;
@@ -19,7 +19,7 @@ export declare class Xterm {
     setWindowTitle(title: string): void;
     setPreferences(value: object): void;
     onInput(callback: (input: string) => void): void;
-    onResize(callback: (colmuns: number, rows: number) => void): void;
+    onResize(callback: (columns: number, rows: number) => void): void;
     deactivate(): void;
     reset(): void;
     close(): void;
