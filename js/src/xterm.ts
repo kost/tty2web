@@ -35,13 +35,10 @@ export class Xterm {
             this.showMessage(String(this.term.cols) + "x" + String(this.term.rows), this.messageTimeout);
         };
 
-        //(<any>this).term.on("open", () => {
-        //   this.resizeListener();
-        //    window.addEventListener("resize", () => { this.resizeListener(); });
-        // });
-
         this.term.open(elem);
 	this.term.focus();
+	this.resizeListener();
+	window.addEventListener("resize", () => { this.resizeListener(); });
 
         this.decoder = new lib.UTF8Decoder()
     };
