@@ -66,6 +66,9 @@ Point your web browser to http://127.0.0.1:8000
    --credential value, -c value  Credential for Basic Authentication (ex: user:pass, default disabled) [$TTY2WEB_CREDENTIAL]
    --random-url, -r              Add a random string to the URL [$TTY2WEB_RANDOM_URL]
    --random-url-length value     Random URL length (default: 8) [$TTY2WEB_RANDOM_URL_LENGTH]
+   --url value                   Specify string for the URL [$TTY2WEB_URL]
+   --download value              Serve files to download from specified dir [$TTY2WEB_DOWNLOAD]
+   --upload value                Enable uploading of files to the specified dir (BE CAREFUL!) [$TTY2WEB_UPLOAD]
    --tls, -t                     Enable TLS/SSL [$TTY2WEB_TLS]
    --tls-crt value               TLS/SSL certificate file path (default: "~/.tty2web.crt") [$TTY2WEB_TLS_CRT]
    --tls-key value               TLS/SSL key file path (default: "~/.tty2web.key") [$TTY2WEB_TLS_KEY]
@@ -90,7 +93,7 @@ Point your web browser to http://127.0.0.1:8000
    --height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_HEIGHT]
    --ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$TTY2WEB_WS_ORIGIN]
    --term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$TTY2WEB_TERM]
-   --close-signal value          Signal sent to the command process when tty2web close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
+   --close-signal value          Signal sent to the command process when gotty close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
    --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
    --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
    --version, -v                 print the version
@@ -134,6 +137,43 @@ openssl req -x509 -nodes -days 9999 -newkey rsa:2048 -keyout ~/.tty2web.key -out
 (NOTE: For Safari uses, see [how to enable self-signed certificates for WebSockets](http://blog.marcon.me/post/24874118286/secure-websockets-safari) when use self-signed certificates)
 
 For additional security, you can use the SSL/TLS client certificate authentication by providing a CA certificate file to the `--tls-ca-crt` option (this option requires the `-t` or `--tls` to be set). This option requires all clients to send valid client certificates that are signed by the specified certification authority.
+
+
+## File transfer
+
+File transfer is supported by using standard HTTP protocol. It is possible to upload and download. It is not enabled by default. You need to specifically enable upload and/or download.
+It works both in bind and reverse mode.
+
+### Download
+
+Start tty2web server with --download dir specified. If you need access to root - specify root(/):
+
+```sh
+tty2web --port 8080 --download / -w bash
+```
+
+Now you can download files by pointing browser to http://127.0.0.1:8080/dl/ or with simple curl command:
+
+```sh
+curl http://127.0.0.1:8080/dl/etc/passwd
+```
+
+It will download /etc/passwd file with curl.
+
+### Upload
+
+Start tty2web server with --upload dir specified. If you need access to root - specify root(/):
+
+```sh
+tty2web --port 8080 --upload /tmp -w bash
+```
+
+Now you can upload file by pointing browser to http://127.0.0.1:8080/ul/ or with simple curl command:
+```sh
+curl -F "f=@/etc/passwd" -F "s=upload" http://127.0.0.1:8080/ul/
+```
+
+It will upload file to the tty2web host to the /tmp/passwd file.
 
 ## Sharing with Multiple Clients
 

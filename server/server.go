@@ -447,15 +447,15 @@ func (server *Server) setupHandlers(ctx context.Context, cancel context.CancelFu
 	siteMux.Handle(pathPrefix+"js/", http.StripPrefix(pathPrefix, staticFileHandler))
 	siteMux.Handle(pathPrefix+"favicon.png", http.StripPrefix(pathPrefix, staticFileHandler))
 	siteMux.Handle(pathPrefix+"css/", http.StripPrefix(pathPrefix, staticFileHandler))
-	if server.options.FileServe != "" {
-		log.Printf("Serving filesystem %s as URI %s", server.options.FileServe, pathPrefix+"fs/")
-		fs := http.FileServer(http.Dir(server.options.FileServe))
-		siteMux.Handle(pathPrefix+"fs/", http.StripPrefix(pathPrefix+"fs/", fs))
+	if server.options.FileDownload != "" {
+		log.Printf("Serving filesystem %s as URI %s", server.options.FileDownload, pathPrefix+"dl/")
+		fs := http.FileServer(http.Dir(server.options.FileDownload))
+		siteMux.Handle(pathPrefix+"fs/", http.StripPrefix(pathPrefix+"dl/", fs))
 	}
 	siteMux.HandleFunc(pathPrefix+"auth_token.js", server.handleAuthToken)
 	siteMux.HandleFunc(pathPrefix+"config.js", server.handleConfig)
-	if server.options.FileUpload {
-		log.Printf("Upload enabled as URI %s", pathPrefix+"ul/")
+	if server.options.FileUpload != "" {
+		log.Printf("Upload enabled to dir %s as URI %s", server.options.FileUpload, pathPrefix+"ul/")
 		siteMux.HandleFunc(pathPrefix+"ul/", server.handleUpload)
 	}
 

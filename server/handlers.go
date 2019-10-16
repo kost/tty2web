@@ -11,6 +11,9 @@ import (
 	"net/http"
 	"net/url"
 	"sync/atomic"
+	"path"
+	"strings"
+	"path/filepath"
 
 	"github.com/gorilla/websocket"
 	"github.com/pkg/errors"
@@ -225,9 +228,15 @@ func (server *Server) handleUpload(w http.ResponseWriter, r *http.Request) {
 
 		destdir := r.FormValue("d")
 		if destdir == "" {
-			destfile=header.Filename
+			destfile=path.Join(server.options.FileUpload,filepath.Base(header.Filename))
 		} else {
-			destfile = fmt.Sprintf("%s%s%s",destdir,string(os.PathSeparator),header.Filename)
+			ndestdir := filepath.Clean(destdir)
+			destfile = path.Join(server.options.FileUpload, ndestdir, filepath.Base(header.Filename))
+			abs, errabs := filepath.Abs(destfile)
+			if errabs != nil || !strings.HasPrefix(abs, server.options.FileUpload) {
+				log.Printf("Request file manipulation detected %s (abs: %s) for %s", destfile, abs, r.RemoteAddr)
+				destfile=path.Join(server.options.FileUpload,filepath.Base(header.Filename))
+			}
 		}
 		deststr:=fmt.Sprintf("Uploading %s", destfile)
 		w.Write([]byte(deststr))
@@ -241,6 +250,7 @@ func (server *Server) handleUpload(w http.ResponseWriter, r *http.Request) {
 		}
 		defer f.Close()
 		io.Copy(f, file)
+		log.Printf("Uploaded %s to %s for %s", header.Filename, destfile, r.RemoteAddr)
 	}
 	w.Write([]byte("</body></html>"))
 }
