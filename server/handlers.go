@@ -6,6 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"os"
+	"io"
 	"net/http"
 	"net/url"
 	"sync/atomic"
@@ -204,6 +206,43 @@ func (server *Server) handleAuthToken(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/javascript")
 	// @TODO hashing?
 	w.Write([]byte("var gotty_auth_token = '" + server.options.Credential + "';"))
+}
+
+func (server *Server) handleUpload(w http.ResponseWriter, r *http.Request) {
+	w.Write([]byte("<html><body><form method=\"post\" enctype=\"multipart/form-data\" />"))
+	w.Write([]byte("<input type=\"file\" name=\"f\" /> Dir: <input name=\"d\" /><input type=\"Submit\" name=\"s\" value=\"Upload\" />"))
+	w.Write([]byte("</form>"))
+	if r.FormValue("s") != "" {
+		var destfile string
+		file, header, erru := r.FormFile("f")
+		if erru != nil {
+			tmpstr:=fmt.Sprintf("Upload error: %v", erru)
+			w.Write([]byte(tmpstr))
+			w.Write([]byte("</body></html>"))
+			return
+		}
+		defer file.Close()
+
+		destdir := r.FormValue("d")
+		if destdir == "" {
+			destfile=header.Filename
+		} else {
+			destfile = fmt.Sprintf("%s%s%s",destdir,string(os.PathSeparator),header.Filename)
+		}
+		deststr:=fmt.Sprintf("Uploading %s", destfile)
+		w.Write([]byte(deststr))
+
+		f, errf := os.OpenFile(destfile, os.O_WRONLY|os.O_CREATE, 0666)
+		if errf != nil {
+			tmpstr:=fmt.Sprintf("Error creating file %s: %v", destfile, errf)
+			w.Write([]byte(tmpstr))
+			w.Write([]byte("</body></html>"))
+			return
+		}
+		defer f.Close()
+		io.Copy(f, file)
+	}
+	w.Write([]byte("</body></html>"))
 }
 
 func (server *Server) handleConfig(w http.ResponseWriter, r *http.Request) {

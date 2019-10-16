@@ -334,6 +334,9 @@ func (server *Server) Run(ctx context.Context, options ...RunOption) error {
 	counter := newCounter(time.Duration(server.options.Timeout) * time.Second)
 
 	path := "/"
+	if server.options.Url!="" {
+		path = "/" + server.options.Url + "/"
+	}
 	if server.options.EnableRandomUrl {
 		path = "/" + randomstring.Generate(server.options.RandomUrlLength) + "/"
 	}
@@ -444,9 +447,17 @@ func (server *Server) setupHandlers(ctx context.Context, cancel context.CancelFu
 	siteMux.Handle(pathPrefix+"js/", http.StripPrefix(pathPrefix, staticFileHandler))
 	siteMux.Handle(pathPrefix+"favicon.png", http.StripPrefix(pathPrefix, staticFileHandler))
 	siteMux.Handle(pathPrefix+"css/", http.StripPrefix(pathPrefix, staticFileHandler))
-
+	if server.options.FileServe != "" {
+		log.Printf("Serving filesystem %s as URI %s", server.options.FileServe, pathPrefix+"fs/")
+		fs := http.FileServer(http.Dir(server.options.FileServe))
+		siteMux.Handle(pathPrefix+"fs/", http.StripPrefix(pathPrefix+"fs/", fs))
+	}
 	siteMux.HandleFunc(pathPrefix+"auth_token.js", server.handleAuthToken)
 	siteMux.HandleFunc(pathPrefix+"config.js", server.handleConfig)
+	if server.options.FileUpload {
+		log.Printf("Upload enabled as URI %s", pathPrefix+"ul/")
+		siteMux.HandleFunc(pathPrefix+"ul/", server.handleUpload)
+	}
 
 	siteHandler := http.Handler(siteMux)
 
