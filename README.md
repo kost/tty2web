@@ -237,11 +237,16 @@ To build the frontend part (JS files and other static files), you need `npm`.
 
 ## Windows support
 
-There is limited Windows support because there is no proper pty support on Windows. Currently, only listening (bind) mode works and you will have most luck with specific programs. In testing, cmd.exe did not work, but powershell.exe works:
+There is limited Windows support because pty support is still new on Windows. Currently, only listening (bind) mode works and you will have most luck with specific programs. In testing, cmd.exe did not work, but powershell.exe works:
 
 ```DOS .bat
 tty2web.exe -w powershell.exe
 ```
+
+Current issues:
+* Reverse mode does not work (Bind only!)
+* Stdin/Stdout only redirected, stderr is not (so errors will not be displayed!)
+* cmd.exe does not work, but powershell.exe does
 
 Some of the applications work better if you run it with winpty. Windows support is not my focus, but if you send me pull request, I would gladly accept it.
 
