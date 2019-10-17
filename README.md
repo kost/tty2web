@@ -4,6 +4,7 @@
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
 
 [release]: https://github.com/kost/tty2web/releases
+
 [license]: https://github.com/kost/tty2web/blob/master/LICENSE
 
 tty2web is a simple command line tool that turns your CLI tools into web applications. it is based on [Gotty](https://github.com/yudai/gotty), but heavily improved.
@@ -27,9 +28,7 @@ $ go get github.com/kost/tty2web
 
 # Usage
 
-```
-Usage: tty2web [options] <command> [<arguments...>]
-```
+    Usage: tty2web [options] <command> [<arguments...>]
 
 Run `tty2web` with your preferred command as its arguments (e.g. `tty2web top`).
 
@@ -37,86 +36,78 @@ By default, tty2web starts a web server at port 8080. Open the URL on your web b
 
 # Example usage
 
-
 Bind mode is simple, specify port to listen and command to run (add -w if you want to interact):
-```
-tty2web --port 8081 top
-```
+
+    tty2web --port 8081 top
+
 Point your web browser to IP and port 8081 in order to see output of top. Add -w if you want to interact directly in the browser.
 
-
 For reverse mode, you need to start listener first:
-```
-tty2web --listen :4444 --server 127.0.0.1:8000 --password test
-```
+
+    tty2web --listen :4444 --server 127.0.0.1:8000 --password test
 
 After having listener running, you can start client to connect to the listener:
-```
-tty2web --connect 192.168.1.1:4444 --password test -w /bin/sh
-```
 
-Point your web browser to http://127.0.0.1:8000
+    tty2web --connect 192.168.1.1:4444 --password test -w /bin/sh
+
+Point your web browser to <http://127.0.0.1:8000>
 
 ## Options
 
-```
-   --address value, -a value     IP address to listen (default: "0.0.0.0") [$TTY2WEB_ADDRESS]
-   --port value, -p value        Port number to listen (default: "8080") [$TTY2WEB_PORT]
-   --permit-write, -w            Permit clients to write to the TTY (BE CAREFUL) [$TTY2WEB_PERMIT_WRITE]
-   --credential value, -c value  Credential for Basic Authentication (ex: user:pass, default disabled) [$TTY2WEB_CREDENTIAL]
-   --random-url, -r              Add a random string to the URL [$TTY2WEB_RANDOM_URL]
-   --random-url-length value     Random URL length (default: 8) [$TTY2WEB_RANDOM_URL_LENGTH]
-   --url value                   Specify string for the URL [$TTY2WEB_URL]
-   --download value              Serve files to download from specified dir [$TTY2WEB_DOWNLOAD]
-   --upload value                Enable uploading of files to the specified dir (BE CAREFUL!) [$TTY2WEB_UPLOAD]
-   --tls, -t                     Enable TLS/SSL [$TTY2WEB_TLS]
-   --tls-crt value               TLS/SSL certificate file path (default: "~/.tty2web.crt") [$TTY2WEB_TLS_CRT]
-   --tls-key value               TLS/SSL key file path (default: "~/.tty2web.key") [$TTY2WEB_TLS_KEY]
-   --tls-ca-crt value            TLS/SSL CA certificate file for client certifications (default: "~/.tty2web.ca.crt") [$TTY2WEB_TLS_CA_CRT]
-   --index value                 Custom index.html file [$TTY2WEB_INDEX]
-   --title-format value          Title format of browser window (default: "{{ .command }}@{{ .hostname }}") [$TTY2WEB_TITLE_FORMAT]
-   --listen value                Listen for reverse connection (ex. 0.0.0.0:4444) [$TTY2WEB_LISTEN]
-   --listencert value            Certificate and key for listen server (ex. mycert) [$TTY2WEB_LISTENCERT]
-   --server value                Server for forwarding reverse connections (ex. 127.0.0.1:6000) (default: "127.0.0.1:6000") [$TTY2WEB_SERVER]
-   --password value              Password for reverse server connection [$TTY2WEB_PASSWORD]
-   --connect value               Connect to host for reverse connection (ex. 192.168.1.1:4444) [$TTY2WEB_CONNECT]
-   --proxy value                 Use proxy for reverse server connection (ex. 192.168.1.1:8080) [$TTY2WEB_PROXY]
-   --proxyauth value             Use proxy authentication for reverse server connection (ex. DOMAIN/user:password) [$TTY2WEB_PROXYAUTH]
-   --useragent value             Use user agent for reverse server connection (ex. Mozilla) [$TTY2WEB_USERAGENT]
-   --reconnect                   Enable reconnection [$TTY2WEB_RECONNECT]
-   --reconnect-time value        Time to reconnect (default: 10) [$TTY2WEB_RECONNECT_TIME]
-   --max-connection value        Maximum connection to tty2web (default: 0) [$TTY2WEB_MAX_CONNECTION]
-   --once                        Accept only one client and exit on disconnection [$TTY2WEB_ONCE]
-   --timeout value               Timeout seconds for waiting a client(0 to disable) (default: 0) [$TTY2WEB_TIMEOUT]
-   --permit-arguments            Permit clients to send command line arguments in URL (e.g. http://example.com:8080/?arg=AAA&arg=BBB) [$TTY2WEB_PERMIT_ARGUMENTS]
-   --width value                 Static width of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_WIDTH]
-   --height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_HEIGHT]
-   --ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$TTY2WEB_WS_ORIGIN]
-   --term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$TTY2WEB_TERM]
-   --close-signal value          Signal sent to the command process when tty2web close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
-   --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
-   --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
-   --version, -v                 print the version
-```
+       --address value, -a value     IP address to listen (default: "0.0.0.0") [$TTY2WEB_ADDRESS]
+       --port value, -p value        Port number to listen (default: "8080") [$TTY2WEB_PORT]
+       --permit-write, -w            Permit clients to write to the TTY (BE CAREFUL) [$TTY2WEB_PERMIT_WRITE]
+       --credential value, -c value  Credential for Basic Authentication (ex: user:pass, default disabled) [$TTY2WEB_CREDENTIAL]
+       --random-url, -r              Add a random string to the URL [$TTY2WEB_RANDOM_URL]
+       --random-url-length value     Random URL length (default: 8) [$TTY2WEB_RANDOM_URL_LENGTH]
+       --url value                   Specify string for the URL [$TTY2WEB_URL]
+       --download value              Serve files to download from specified dir [$TTY2WEB_DOWNLOAD]
+       --upload value                Enable uploading of files to the specified dir (BE CAREFUL!) [$TTY2WEB_UPLOAD]
+       --tls, -t                     Enable TLS/SSL [$TTY2WEB_TLS]
+       --tls-crt value               TLS/SSL certificate file path (default: "~/.tty2web.crt") [$TTY2WEB_TLS_CRT]
+       --tls-key value               TLS/SSL key file path (default: "~/.tty2web.key") [$TTY2WEB_TLS_KEY]
+       --tls-ca-crt value            TLS/SSL CA certificate file for client certifications (default: "~/.tty2web.ca.crt") [$TTY2WEB_TLS_CA_CRT]
+       --index value                 Custom index.html file [$TTY2WEB_INDEX]
+       --title-format value          Title format of browser window (default: "{{ .command }}@{{ .hostname }}") [$TTY2WEB_TITLE_FORMAT]
+       --listen value                Listen for reverse connection (ex. 0.0.0.0:4444) [$TTY2WEB_LISTEN]
+       --listencert value            Certificate and key for listen server (ex. mycert) [$TTY2WEB_LISTENCERT]
+       --server value                Server for forwarding reverse connections (ex. 127.0.0.1:6000) (default: "127.0.0.1:6000") [$TTY2WEB_SERVER]
+       --password value              Password for reverse server connection [$TTY2WEB_PASSWORD]
+       --connect value               Connect to host for reverse connection (ex. 192.168.1.1:4444) [$TTY2WEB_CONNECT]
+       --proxy value                 Use proxy for reverse server connection (ex. 192.168.1.1:8080) [$TTY2WEB_PROXY]
+       --proxyauth value             Use proxy authentication for reverse server connection (ex. DOMAIN/user:password) [$TTY2WEB_PROXYAUTH]
+       --useragent value             Use user agent for reverse server connection (ex. Mozilla) [$TTY2WEB_USERAGENT]
+       --reconnect                   Enable reconnection [$TTY2WEB_RECONNECT]
+       --reconnect-time value        Time to reconnect (default: 10) [$TTY2WEB_RECONNECT_TIME]
+       --max-connection value        Maximum connection to tty2web (default: 0) [$TTY2WEB_MAX_CONNECTION]
+       --once                        Accept only one client and exit on disconnection [$TTY2WEB_ONCE]
+       --timeout value               Timeout seconds for waiting a client(0 to disable) (default: 0) [$TTY2WEB_TIMEOUT]
+       --permit-arguments            Permit clients to send command line arguments in URL (e.g. http://example.com:8080/?arg=AAA&arg=BBB) [$TTY2WEB_PERMIT_ARGUMENTS]
+       --width value                 Static width of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_WIDTH]
+       --height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_HEIGHT]
+       --ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$TTY2WEB_WS_ORIGIN]
+       --term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$TTY2WEB_TERM]
+       --close-signal value          Signal sent to the command process when tty2web close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
+       --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
+       --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
+       --version, -v                 print the version
 
 ### Config File
 
 You can customize default options and your terminal (hterm) by providing a config file to the `tty2web` command. tty2web loads a profile file at `~/.tty2web` by default when it exists.
 
-```
-// Listen at port 9000 by default
-port = "9000"
+    // Listen at port 9000 by default
+    port = "9000"
 
-// Enable TSL/SSL by default
-enable_tls = true
+    // Enable TSL/SSL by default
+    enable_tls = true
 
-// hterm preferences
-// Smaller font and a little bit bluer background color
-preferences {
-    font_size = 5
-    background_color = "rgb(16, 16, 32)"
-}
-```
+    // hterm preferences
+    // Smaller font and a little bit bluer background color
+    preferences {
+        font_size = 5
+        background_color = "rgb(16, 16, 32)"
+    }
 
 See the [`.tty2web`](https://github.com/kost/tty2web/blob/master/.tty2web) file in this repository for the list of configuration options.
 
@@ -138,7 +129,6 @@ openssl req -x509 -nodes -days 9999 -newkey rsa:2048 -keyout ~/.tty2web.key -out
 
 For additional security, you can use the SSL/TLS client certificate authentication by providing a CA certificate file to the `--tls-ca-crt` option (this option requires the `-t` or `--tls` to be set). This option requires all clients to send valid client certificates that are signed by the specified certification authority.
 
-
 ## File transfer
 
 File transfer is supported by using standard HTTP protocol. It is possible to upload and download. It is not enabled by default. You need to specifically enable upload and/or download.
@@ -152,7 +142,7 @@ Start tty2web server with --download dir specified. If you need access to root -
 tty2web --port 8080 --download / -w bash
 ```
 
-Now you can download files by pointing browser to http://127.0.0.1:8080/dl/ or with simple curl command:
+Now you can download files by pointing browser to <http://127.0.0.1:8080/dl/> or with simple curl command:
 
 ```sh
 curl http://127.0.0.1:8080/dl/etc/passwd
@@ -168,7 +158,8 @@ Start tty2web server with --upload dir specified. If you need access to root - s
 tty2web --port 8080 --upload /tmp -w bash
 ```
 
-Now you can upload file by pointing browser to http://127.0.0.1:8080/ul/ or with simple curl command:
+Now you can upload file by pointing browser to <http://127.0.0.1:8080/ul/> or with simple curl command:
+
 ```sh
 curl -F "f=@/etc/passwd" -F "s=upload" http://127.0.0.1:8080/ul/
 ```
@@ -197,17 +188,14 @@ By using terminal multiplexers, you can have the control of your terminal and al
 
 To share your current session with others by a shortcut key, you can add a line like below to your `.tmux.conf`.
 
-```
-# Start tty2web in a new window with C-t
-bind-key C-t new-window "tty2web tmux attach -t `tmux display -p '#S'`"
-```
+    # Start tty2web in a new window with C-t
+    bind-key C-t new-window "tty2web tmux attach -t `tmux display -p '#S'`"
 
 ### Screen
 
 Install screen:
-```
-apt-get install screen
-```
+
+    apt-get install screen
 
 Start a new session with `screen -S session-name` and connect to it with tty2web in another terminal window/tab through `screen -x session-name`.
 All commands and activities being done in the first terminal tab/window will now be broadcasted by tty2web.
@@ -244,9 +232,10 @@ tty2web.exe -w powershell.exe
 ```
 
 Current issues:
-* Reverse mode does not work (Bind only!)
-* Stdin/Stdout only redirected, stderr is not (so errors will not be displayed!)
-* cmd.exe does not work, but powershell.exe does
+
+-   Reverse mode does not work (Bind only!)
+-   Stdin/Stdout only redirected, stderr is not (so errors will not be displayed!)
+-   cmd.exe does not work, but powershell.exe does
 
 Some of the applications work better if you run it with winpty. Windows support is not my focus, but if you send me pull request, I would gladly accept it.
 
@@ -258,20 +247,20 @@ tty2web uses [xterm.js](https://xtermjs.org/) and [hterm](https://groups.google.
 
 ### Command line client
 
-* [gotty-client](https://github.com/moul/gotty-client): If you want to connect to tty2web or GoTTY server from your terminal
+-   [gotty-client](https://github.com/moul/gotty-client): If you want to connect to tty2web or GoTTY server from your terminal
 
 ### Terminal/SSH on Web Browsers
 
-* [gotty](https://github.com/yudai/gotty): Original gotty on which tty2web is based
-* [Secure Shell (Chrome App)](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo): If you are a chrome user and need a "real" SSH client on your web browser, perhaps the Secure Shell app is what you want
-* [Wetty](https://github.com/krishnasrinivas/wetty): Node based web terminal (SSH/login)
-* [ttyd](https://tsl0922.github.io/ttyd): C port of GoTTY with CJK and IME support
+-   [gotty](https://github.com/yudai/gotty): Original gotty on which tty2web is based
+-   [Secure Shell (Chrome App)](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo): If you are a chrome user and need a "real" SSH client on your web browser, perhaps the Secure Shell app is what you want
+-   [Wetty](https://github.com/krishnasrinivas/wetty): Node based web terminal (SSH/login)
+-   [ttyd](https://tsl0922.github.io/ttyd): C port of GoTTY with CJK and IME support
 
 ### Terminal Sharing
 
-* [tmate](http://tmate.io/): Forked-Tmux based Terminal-Terminal sharing
-* [termshare](https://termsha.re): Terminal-Terminal sharing through a HTTP server
-* [tmux](https://tmux.github.io/): Tmux itself also supports TTY sharing through SSH)
+-   [tmate](http://tmate.io/): Forked-Tmux based Terminal-Terminal sharing
+-   [termshare](https://termsha.re): Terminal-Terminal sharing through a HTTP server
+-   [tmux](https://tmux.github.io/): Tmux itself also supports TTY sharing through SSH)
 
 # Credits
 
@@ -280,4 +269,3 @@ tty2web is based on [gotty](https://github.com/yudai/gotty). To be specific, it 
 # License
 
 The MIT License
-
