@@ -93,7 +93,7 @@ Point your web browser to http://127.0.0.1:8000
    --height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_HEIGHT]
    --ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$TTY2WEB_WS_ORIGIN]
    --term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$TTY2WEB_TERM]
-   --close-signal value          Signal sent to the command process when gotty close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
+   --close-signal value          Signal sent to the command process when tty2web close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
    --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
    --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
    --version, -v                 print the version
