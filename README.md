@@ -227,7 +227,7 @@ You can build a binary using the following commands. There is basic Windows supp
 ```sh
 # Install tools
 go get github.com/jteeuwen/go-bindata/...
-go get github.com/tools/godep
+go get -u github.com/golang/dep/cmd/dep
 
 # Build
 make
