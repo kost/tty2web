@@ -62,7 +62,7 @@ js/node_modules/webpack:
 	npm install
 
 tools:
-	go get github.com/tools/godep
+	go get -u github.com/golang/dep/cmd/dep
 	go get github.com/mitchellh/gox
 	go get github.com/tcnksm/ghr
 	go get github.com/jteeuwen/go-bindata/...
