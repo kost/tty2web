@@ -450,7 +450,7 @@ func (server *Server) setupHandlers(ctx context.Context, cancel context.CancelFu
 	if server.options.FileDownload != "" {
 		log.Printf("Serving filesystem %s as URI %s", server.options.FileDownload, pathPrefix+"dl/")
 		fs := http.FileServer(http.Dir(server.options.FileDownload))
-		siteMux.Handle(pathPrefix+"fs/", http.StripPrefix(pathPrefix+"dl/", fs))
+		siteMux.Handle(pathPrefix+"dl/", http.StripPrefix(pathPrefix+"dl/", fs))
 	}
 	siteMux.HandleFunc(pathPrefix+"auth_token.js", server.handleAuthToken)
 	siteMux.HandleFunc(pathPrefix+"config.js", server.handleConfig)
