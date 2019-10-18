@@ -17,7 +17,7 @@ import (
 var proxytout = time.Millisecond * 1000 //timeout for wait magicbytes
 var session *yamux.Session
 // Catches yamux connecting to us
-func listenForSocks(address string, certificate string, agentpassword string) {
+func listenForAgent(address string, certificate string, agentpassword string) {
 	var err error
 	var cer tls.Certificate
 
@@ -36,7 +36,7 @@ func listenForSocks(address string, certificate string, agentpassword string) {
 		log.Println(err)
 		return
 	}
-	log.Println("Listening for the far end")
+	log.Println("Listening for agent")
 	config := &tls.Config{Certificates: []tls.Certificate{cer}}
 	//ln, err := net.Listen("tcp", address)
 	ln, err := tls.Listen("tcp", address, config)
@@ -86,7 +86,7 @@ func listenForSocks(address string, certificate string, agentpassword string) {
 		} else {
 			//magic bytes received.
 			//disable socket read timeouts
-			log.Println("Got Client")
+			log.Printf("Got agent with correct authentication from %v", conn.RemoteAddr())
 			conn.SetReadDeadline(time.Now().Add(100 * time.Hour))
 
 			//Add connection to yamux
@@ -113,9 +113,8 @@ func listenForClients(address string) error {
 			conn.Close()
 			continue
 		}
-		log.Println("Got a client")
+		log.Printf("Got client from %v", conn.RemoteAddr())
 
-		log.Println("Opening a stream")
 		stream, err := session.Open()
 		if err != nil {
 			return err
@@ -124,15 +123,15 @@ func listenForClients(address string) error {
 		// connect both of conn and stream
 
 		go func() {
-			log.Println("Starting to copy conn to stream")
+			log.Println("Starting to copy conn to stream (%v)", conn.RemoteAddr())
 			io.Copy(conn, stream)
 			conn.Close()
 		}()
 		go func() {
-			log.Println("Starting to copy stream to conn")
+			log.Println("Starting to copy stream to conn (%v)", conn.RemoteAddr())
 			io.Copy(stream, conn)
 			stream.Close()
-			log.Println("Done copying stream to conn")
+			log.Println("Done copying stream to conn (%v)", conn.RemoteAddr())
 		}()
 	}
 }
