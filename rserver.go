@@ -123,15 +123,15 @@ func listenForClients(address string) error {
 		// connect both of conn and stream
 
 		go func() {
-			log.Println("Starting to copy conn to stream (%v)", conn.RemoteAddr())
+			log.Printf("Starting to copy conn to stream (%v)", conn.RemoteAddr())
 			io.Copy(conn, stream)
 			conn.Close()
 		}()
 		go func() {
-			log.Println("Starting to copy stream to conn (%v)", conn.RemoteAddr())
+			log.Printf("Starting to copy stream to conn (%v)", conn.RemoteAddr())
 			io.Copy(stream, conn)
 			stream.Close()
-			log.Println("Done copying stream to conn (%v)", conn.RemoteAddr())
+			log.Printf("Done copying stream to conn (%v)", conn.RemoteAddr())
 		}()
 	}
 }
