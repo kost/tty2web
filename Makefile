@@ -8,7 +8,7 @@ tty2web: main.go server/*.go webtty/*.go backend/*.go Makefile
 	go build ${BUILD_OPTIONS}
 
 .PHONY: asset
-asset: bindata/static/js/tty2web-bundle.js bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css
+asset: bindata/static/js/tty2web-bundle.js bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css bindata/static/js/sidenav.js
 	go-bindata -prefix bindata -pkg server -ignore=\\.gitkeep -o server/asset.go bindata/...
 	gofmt -w server/asset.go
 
@@ -33,6 +33,9 @@ bindata/static/js: bindata/static
 
 bindata/static/js/tty2web-bundle.js: bindata/static/js js/dist/tty2web-bundle.js
 	cp js/dist/tty2web-bundle.js bindata/static/js/tty2web-bundle.js
+
+bindata/static/js/sidenav.js: bindata/static/js resources/js/sidenav.js
+	cp resources/js/sidenav.js bindata/static/js/sidenav.js
 
 bindata/static/css: bindata/static
 	mkdir -p bindata/static/css

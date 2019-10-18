@@ -258,6 +258,15 @@ func (server *Server) handleUpload(w http.ResponseWriter, r *http.Request) {
 func (server *Server) handleConfig(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/javascript")
 	w.Write([]byte("var gotty_term = '" + server.options.Term + "';"))
+	if server.options.FileDownload != "" || server.options.FileUpload != "" {
+		w.Write([]byte("document.getElementById(\"topnav\").style.display = \"block\";"))
+	}
+	if server.options.FileDownload != "" {
+		w.Write([]byte("document.getElementById(\"download\").style.display = \"block\";"))
+	}
+	if server.options.FileUpload != "" {
+		w.Write([]byte("document.getElementById(\"upload\").style.display = \"block\";"))
+	}
 }
 
 // titleVariables merges maps in a specified order.
