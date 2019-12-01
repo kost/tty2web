@@ -26,6 +26,16 @@ If you have a Go language environment, you can install tty2web with the `go get`
 $ go get github.com/kost/tty2web
 ```
 
+I would suggest to build it with following commands (make sure that you have $GOPATH set to valid value):
+
+```sh
+git clone https://github.com/kost/tty2web $GOPATH/src/tty2web
+cd $GOPATH/src/tty2web
+make tools
+make tty2web
+```
+
+
 # Usage
 
     Usage: tty2web [options] <command> [<arguments...>]
