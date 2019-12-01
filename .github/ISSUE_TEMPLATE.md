@@ -2,7 +2,7 @@
 
 Please answer these quesions for a bug report. Thanks!
 
-### What version of tty2web are you using (`gotty --version`)?
+### What version of tty2web are you using (`tty2web --version`)?
 
 
 ### What operating system and browser are you using?
