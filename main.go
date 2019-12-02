@@ -9,7 +9,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/codegangsta/cli"
+	"github.com/urfave/cli"
 
 	"github.com/kost/tty2web/backend/localcommand"
 	"github.com/kost/tty2web/pkg/homedir"
@@ -27,34 +27,38 @@ func main() {
 
 	appOptions := &server.Options{}
 	if err := utils.ApplyDefaultValues(appOptions); err != nil {
+		log.Printf("Error applying default value: %v", err)
 		exit(err, 1)
 	}
 	backendOptions := &localcommand.Options{}
 	if err := utils.ApplyDefaultValues(backendOptions); err != nil {
+		log.Printf("Error applying backend default value: %v", err)
 		exit(err, 1)
 	}
 
 	cliFlags, flagMappings, err := utils.GenerateFlags(appOptions, backendOptions)
 	if err != nil {
+		log.Printf("Error generating flags: %v", err)
 		exit(err, 3)
 	}
 
 	app.Flags = append(
 		cliFlags,
-		cli.StringFlag{
+		&cli.StringFlag{
 			Name:   "config",
 			Value:  "~/.tty2web",
 			Usage:  "Config file path",
-			EnvVar: "TTY2WEB_CONFIG",
+			EnvVars: []string{"TTY2WEB_CONFIG"},
 		},
 	)
 
-	app.Action = func(c *cli.Context) {
+	app.Action = func(c *cli.Context) error {
 
 		configFile := c.String("config")
 		_, err := os.Stat(homedir.Expand(configFile))
 		if configFile != "~/.tty2web" || !os.IsNotExist(err) {
 			if err := utils.ApplyConfigFile(configFile, appOptions, backendOptions); err != nil {
+				log.Printf("Error applying config file: %v", err)
 				exit(err, 2)
 			}
 		}
@@ -66,6 +70,7 @@ func main() {
 
 		err = appOptions.Validate()
 		if err != nil {
+			log.Printf("Error validating options: %v", err)
 			exit(err, 6)
 		}
 
@@ -73,37 +78,39 @@ func main() {
 			log.Printf("Listening for reverse connection %s", appOptions.Listen)
 			go listenForAgent(appOptions.Listen, appOptions.ListenCert, appOptions.Password)
 			log.Fatal(listenForClients(appOptions.Server))
-			return
+			return nil
 		}
 
-		if len(c.Args()) == 0 {
+		args := c.Args()
+		if args.Len() == 0 {
 			msg := "Error: No command given."
 			cli.ShowAppHelp(c)
 			exit(fmt.Errorf(msg), 1)
 		}
 
-		args := c.Args()
-		factory, err := localcommand.NewFactory(args[0], args[1:], backendOptions)
+		factory, err := localcommand.NewFactory(c.Args().First(), c.Args().Tail(), backendOptions)
 		if err != nil {
+			log.Printf("Error creating local command: %v", err)
 			exit(err, 3)
 		}
 
 		hostname, _ := os.Hostname()
 		appOptions.TitleVariables = map[string]interface{}{
-			"command":  args[0],
-			"argv":     args[1:],
+			"command":  c.Args().First(),
+			"argv":     c.Args().Tail(),
 			"hostname": hostname,
 		}
 
 		srv, err := server.New(factory, appOptions)
 		if err != nil {
+			log.Printf("Error creating new server: %v", err)
 			exit(err, 3)
 		}
 
 		ctx, cancel := context.WithCancel(context.Background())
 		gCtx, gCancel := context.WithCancel(context.Background())
 
-		log.Printf("tty2web is starting with command: %s", strings.Join(args, " "))
+		log.Printf("tty2web is starting with command: %s", strings.Join(args.Slice(), " "))
 
 		errs := make(chan error, 1)
 		go func() {
@@ -115,6 +122,7 @@ func main() {
 			fmt.Printf("Error: %s\n", err)
 			exit(err, 8)
 		}
+		return nil
 
 	}
 	app.Run(os.Args)
