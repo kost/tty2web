@@ -9,7 +9,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 
 	"github.com/kost/tty2web/backend/localcommand"
 	"github.com/kost/tty2web/pkg/homedir"
