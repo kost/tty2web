@@ -4,7 +4,7 @@ VERSION = 2.2.0
 BUILD_OPTIONS = -ldflags "-X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
 
 tty2web: main.go server/*.go webtty/*.go backend/*.go Makefile
-	dep ensure
+	go get -u ./...
 	go build ${BUILD_OPTIONS}
 
 .PHONY: asset
@@ -29,7 +29,6 @@ bindata/static/favicon.png: bindata/static resources/favicon.png
 
 bindata/static/js: bindata/static
 	mkdir -p bindata/static/js
-
 
 bindata/static/js/tty2web-bundle.js: bindata/static/js js/dist/tty2web-bundle.js
 	cp js/dist/tty2web-bundle.js bindata/static/js/tty2web-bundle.js
@@ -62,7 +61,6 @@ js/node_modules/webpack:
 	npm install
 
 tools:
-	go get -u github.com/golang/dep/cmd/dep
 	go get github.com/mitchellh/gox
 	go get github.com/tcnksm/ghr
 	go get github.com/jteeuwen/go-bindata/...
