@@ -1,6 +1,6 @@
 OUTPUT_DIR = ./builds
 GIT_COMMIT = `git rev-parse HEAD | cut -c1-7`
-VERSION = 2.2.0
+VERSION = 2.3.0
 BUILD_OPTIONS = -ldflags "-X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
 
 tty2web: main.go server/*.go webtty/*.go backend/*.go Makefile
