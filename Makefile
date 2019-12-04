@@ -82,5 +82,8 @@ rel:
 	mkdir -p release
 	CGO_ENABLED=0 gox -ldflags="-s -w -X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)" -output="release/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
+draft:
+	ghr -draft v$(VERSION) release/
+
 release:
 	ghr -c ${GIT_COMMIT} --delete --prerelease -u kost -r tty2web pre-release ${OUTPUT_DIR}/dist
