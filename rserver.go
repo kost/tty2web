@@ -18,7 +18,7 @@ import (
 var proxytout = time.Millisecond * 1000 //timeout for wait magicbytes
 
 // listen for agents
-func listenForAgents(tlslisten bool, address string, clients string, certificate string) error {
+func listenForAgents(tlslisten bool, address string, clients string, certificate string, agentpassword string) error {
 	var err, erry error
 	var cer tls.Certificate
 	var session *yamux.Session

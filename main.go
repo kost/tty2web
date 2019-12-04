@@ -76,8 +76,7 @@ func main() {
 
 		if appOptions.Listen!="" {
 			log.Printf("Listening for reverse connection %s", appOptions.Listen)
-			go listenForAgents(true, appOptions.Listen, appOptions.ListenCert, appOptions.Password)
-			log.Fatal(listenForClients(appOptions.Server))
+			log.Fatal(listenForAgents(true, appOptions.Listen, appOptions.Server, appOptions.ListenCert, appOptions.Password))
 			return nil
 		}
 
