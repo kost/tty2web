@@ -22,7 +22,7 @@ type Options struct {
 	TLSCACrtFile        string           `hcl:"tls_ca_crt_file" flagName:"tls-ca-crt" flagDescribe:"TLS/SSL CA certificate file for client certifications" default:"~/.tty2web.ca.crt"`
 	IndexFile           string           `hcl:"index_file" flagName:"index" flagDescribe:"Custom index.html file" default:""`
 	TitleFormat         string           `hcl:"title_format" flagName:"title-format" flagSName:"" flagDescribe:"Title format of browser window" default:"{{ .command }}@{{ .hostname }}"`
-	Listen              string           `hcl:"listen" flagName:"listen" flagSName:"" flagDescribe:"Listen for reverse connection (ex. 0.0.0.0:4444)" default:""`
+	Listen              string           `hcl:"listen" flagName:"listen" flagSName:"" flagDescribe:"Listen for reverse connection agents (ex. 0.0.0.0:4444)" default:""`
 	ListenCert          string           `hcl:"listencert" flagName:"listencert" flagSName:"" flagDescribe:"Certificate and key for listen server (ex. mycert)" default:""`
 	Server              string           `hcl:"server" flagName:"server" flagSName:"" flagDescribe:"Server for forwarding reverse connections (ex. 127.0.0.1:6000)" default:"127.0.0.1:6000"`
 	Password            string           `hcl:"password" flagName:"password" flagSName:"" flagDescribe:"Password for reverse server connection" default:""`
