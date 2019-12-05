@@ -74,9 +74,13 @@ func main() {
 			exit(err, 6)
 		}
 
+
 		if appOptions.Listen!="" {
 			log.Printf("Listening for reverse connection %s", appOptions.Listen)
+			go func() {
 			log.Fatal(listenForAgents(true, appOptions.Listen, appOptions.Server, appOptions.ListenCert, appOptions.Password))
+			}()
+			wait4Signals()
 			return nil
 		}
 
@@ -103,15 +107,16 @@ func main() {
 		srv, err := server.New(factory, appOptions)
 		if err != nil {
 			log.Printf("Error creating new server: %v", err)
-			exit(err, 3)
+			exit(err, 5)
 		}
 
-		ctx, cancel := context.WithCancel(context.Background())
-		gCtx, gCancel := context.WithCancel(context.Background())
 
 		log.Printf("tty2web is starting with command: %s", strings.Join(args.Slice(), " "))
 
+		ctx, cancel := context.WithCancel(context.Background())
+		gCtx, gCancel := context.WithCancel(context.Background())
 		errs := make(chan error, 1)
+
 		go func() {
 			errs <- srv.Run(ctx, server.WithGracefullContext(gCtx))
 		}()
@@ -132,6 +137,16 @@ func exit(err error, code int) {
 		fmt.Println(err)
 	}
 	os.Exit(code)
+}
+
+func wait4Signals() {
+	c := make(chan os.Signal)
+	signal.Notify(c, os.Interrupt)
+	select {
+        case sig := <-c:
+            fmt.Printf("Got %s signal. Aborting...\n", sig)
+            os.Exit(1)
+        }
 }
 
 func waitSignals(errs chan error, cancel context.CancelFunc, gracefullCancel context.CancelFunc) error {
