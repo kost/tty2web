@@ -2,10 +2,16 @@ OUTPUT_DIR = ./builds
 GIT_COMMIT = `git rev-parse HEAD | cut -c1-7`
 VERSION = 2.3.0
 BUILD_OPTIONS = -ldflags "-X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
+STATIC_OPTIONS = -ldflags "-extldflags='-static' -X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
+
 
 tty2web: main.go server/*.go webtty/*.go backend/*.go Makefile
 	go get -u ./...
 	go build ${BUILD_OPTIONS}
+
+tty2web-static: main.go server/*.go webtty/*.go backend/*.go Makefile
+	go get -u ./...
+	go build ${STATIC_OPTIONS}
 
 .PHONY: asset
 asset: bindata/static/js/tty2web-bundle.js bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css bindata/static/js/sidenav.js
