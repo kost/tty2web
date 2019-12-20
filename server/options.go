@@ -31,6 +31,7 @@ type Options struct {
 	ProxyAuth           string           `hcl:"proxyauth" flagName:"proxyauth" flagSName:"" flagDescribe:"Use proxy authentication for reverse server connection (ex. DOMAIN/user:password)" default:""`
 	UserAgent           string           `hcl:"useragent" flagName:"useragent" flagSName:"" flagDescribe:"Use user agent for reverse server connection (ex. Mozilla)" default:""`
 	EnableReconnect     bool             `hcl:"enable_reconnect" flagName:"reconnect" flagDescribe:"Enable reconnection" default:"false"`
+	Verbose             bool             `hcl:"verbose" flagName:"verbose" flagDescribe:"Enable verbose messages" default:"false"`
 	ReconnectTime       int              `hcl:"reconnect_time" flagName:"reconnect-time" flagDescribe:"Time to reconnect" default:"10"`
 	MaxConnection       int              `hcl:"max_connection" flagName:"max-connection" flagDescribe:"Maximum connection to tty2web" default:"0"`
 	Once                bool             `hcl:"once" flagName:"once" flagDescribe:"Accept only one client and exit on disconnection" default:"false"`

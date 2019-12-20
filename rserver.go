@@ -18,7 +18,7 @@ import (
 var proxytout = time.Millisecond * 1000 //timeout for wait magicbytes
 
 // listen for agents
-func listenForAgents(tlslisten bool, address string, clients string, certificate string, agentpassword string) error {
+func listenForAgents(verbose bool, tlslisten bool, address string, clients string, certificate string, agentpassword string) error {
 	var err, erry error
 	var cer tls.Certificate
 	var session *yamux.Session
@@ -107,7 +107,7 @@ func listenForAgents(tlslisten bool, address string, clients string, certificate
 				continue
 			}
 			sessions = append(sessions, session)
-			go listenForClients(agentstr, listenstr[0], portnum+portinc, session)
+			go listenForClients(verbose, agentstr, listenstr[0], portnum+portinc, session)
 			portinc = portinc + 1
 		}
 	}
@@ -115,7 +115,7 @@ func listenForAgents(tlslisten bool, address string, clients string, certificate
 }
 
 // Catches local clients and connects to yamux
-func listenForClients(agentstr string, listen string, port int, session *yamux.Session) error {
+func listenForClients(verbose bool, agentstr string, listen string, port int, session *yamux.Session) error {
 	var ln net.Listener
 	var address string
 	var err error
@@ -153,16 +153,24 @@ func listenForClients(agentstr string, listen string, port int, session *yamux.S
 		// connect both of conn and stream
 
 		go func() {
-			log.Printf("[%s] Starting to copy conn to stream for %s", agentstr, conn.RemoteAddr())
+			if verbose {
+				log.Printf("[%s] Starting to copy conn to stream for %s", agentstr, conn.RemoteAddr())
+			}
 			io.Copy(conn, stream)
 			conn.Close()
-			log.Printf("[%s] Done copying conn to stream for %s", agentstr, conn.RemoteAddr())
+			if verbose {
+				log.Printf("[%s] Done copying conn to stream for %s", agentstr, conn.RemoteAddr())
+			}
 		}()
 		go func() {
-			log.Printf("[%s] Starting to copy stream to conn for %s", agentstr, conn.RemoteAddr())
+			if verbose {
+				log.Printf("[%s] Starting to copy stream to conn for %s", agentstr, conn.RemoteAddr())
+			}
 			io.Copy(stream, conn)
 			stream.Close()
-			log.Printf("[%s] Done copying stream to conn for %s", agentstr, conn.RemoteAddr())
+			if verbose {
+				log.Printf("[%s] Done copying stream to conn for %s", agentstr, conn.RemoteAddr())
+			}
 		}()
 	}
 }
