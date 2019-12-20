@@ -1,20 +1,20 @@
 {
     "devDependencies": {
-        "@babel/cli": "^7.7.5",
-        "@babel/core": "^7.7.5",
+        "@babel/cli": "^7.7.7",
+        "@babel/core": "^7.7.7",
         "babel-preset-env": "^1.7.0",
         "license-loader": "^0.7.0",
-        "terser-webpack-plugin": "^2.2.3",
+        "terser-webpack-plugin": "^2.3.1",
         "ts-loader": "^6.2.1",
         "typescript": "^3.7.3",
         "uglifyjs-webpack-plugin": "^2.2.0",
-        "webpack": "^4.41.2",
+        "webpack": "^4.41.4",
         "webpack-cli": "^3.3.10"
     },
     "dependencies": {
         "@babel/plugin-transform-runtime": "^7.7.6",
         "@babel/polyfill": "^7.7.0",
-        "@babel/runtime": "^7.7.6",
+        "@babel/runtime": "^7.7.7",
         "libapps": "github:yudai/libapps#release-hterm-1.70",
         "xterm": "^4.3.0",
         "xterm-addon-fit": "^0.3.0"
