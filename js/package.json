@@ -12,9 +12,9 @@
         "webpack-cli": "^3.3.10"
     },
     "dependencies": {
-        "@babel/plugin-transform-runtime": "^7.7.6",
-        "@babel/polyfill": "^7.7.0",
-        "@babel/runtime": "^7.7.7",
+        "@babel/plugin-transform-runtime": "^7.12.1",
+        "@babel/polyfill": "^7.12.1",
+        "@babel/runtime": "^7.12.1",
         "libapps": "github:yudai/libapps#release-hterm-1.70",
         "xterm": "^4.3.0",
         "xterm-addon-fit": "^0.4.0"
