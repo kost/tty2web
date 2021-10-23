@@ -1,6 +1,6 @@
 OUTPUT_DIR = ./builds
 GIT_COMMIT = `git rev-parse HEAD | cut -c1-7`
-VERSION = 2.4.0
+VERSION = 2.4.1
 BUILD_OPTIONS = -ldflags "-X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
 STATIC_OPTIONS = -ldflags "-extldflags='-static' -X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
 
@@ -22,10 +22,10 @@ asset: bindata/static/js/tty2web-bundle.js bindata/static/index.html bindata/sta
 all: asset tty2web
 
 bindata:
-	mkdir bindata
+	mkdir -p bindata
 
 bindata/static: bindata
-	mkdir bindata/static
+	mkdir -p bindata/static
 
 bindata/static/index.html: bindata/static resources/index.html
 	cp resources/index.html bindata/static/index.html

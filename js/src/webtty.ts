@@ -94,7 +94,7 @@ export class WebTTY {
                     }
                 );
 
-                pingTimer = setInterval(() => {
+                pingTimer = window.setInterval(() => {
                     connection.send(msgPing)
                 }, 30 * 1000);
 
@@ -128,7 +128,7 @@ export class WebTTY {
                 this.term.deactivate();
                 this.term.showMessage("Connection Closed", 0);
                 if (this.reconnect > 0) {
-                    reconnectTimeout = setTimeout(() => {
+                    reconnectTimeout = window.setTimeout(() => {
                         connection = this.connectionFactory.create();
                         this.term.reset();
                         setup();

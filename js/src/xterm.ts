@@ -59,7 +59,7 @@ export class Xterm {
             clearTimeout(this.messageTimer);
         }
         if (timeout > 0) {
-            this.messageTimer = setTimeout(() => {
+            this.messageTimer = window.setTimeout(() => {
                 this.elem.removeChild(this.message);
             }, timeout);
         }
