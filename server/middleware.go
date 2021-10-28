@@ -18,7 +18,7 @@ func (server *Server) wrapLogger(handler http.Handler) http.Handler {
 func (server *Server) wrapHeaders(handler http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// todo add version
-		w.Header().Set("Server", "GoTTY")
+		w.Header().Set("Server", "tty2web")
 		handler.ServeHTTP(w, r)
 	})
 }
@@ -28,7 +28,7 @@ func (server *Server) wrapBasicAuth(handler http.Handler, credential string) htt
 		token := strings.SplitN(r.Header.Get("Authorization"), " ", 2)
 
 		if len(token) != 2 || strings.ToLower(token[0]) != "basic" {
-			w.Header().Set("WWW-Authenticate", `Basic realm="GoTTY"`)
+			w.Header().Set("WWW-Authenticate", `Basic realm="tty2web"`)
 			http.Error(w, "Bad Request", http.StatusUnauthorized)
 			return
 		}
@@ -40,7 +40,7 @@ func (server *Server) wrapBasicAuth(handler http.Handler, credential string) htt
 		}
 
 		if credential != string(payload) {
-			w.Header().Set("WWW-Authenticate", `Basic realm="GoTTY"`)
+			w.Header().Set("WWW-Authenticate", `Basic realm="tty2web"`)
 			http.Error(w, "authorization failed", http.StatusUnauthorized)
 			return
 		}

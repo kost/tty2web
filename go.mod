@@ -12,8 +12,11 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/hashicorp/yamux v0.0.0-20210826001029-26ff87cf9493
+	github.com/jteeuwen/go-bindata v3.0.7+incompatible // indirect
 	github.com/kost/go-ntlmssp v0.0.0-20190601005913-a22bdd33b2a4
+	github.com/mitchellh/gox v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1
+	github.com/tcnksm/ghr v0.14.0 // indirect
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/yudai/hcl v0.0.0-20151013225006-5fa2393b3552
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
