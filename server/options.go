@@ -11,6 +11,9 @@ type Options struct {
 	EnableBasicAuth     bool             `hcl:"enable_basic_auth" default:"false"`
 	Credential          string           `hcl:"credential" flagName:"credential" flagSName:"c" flagDescribe:"Credential for Basic Authentication (ex: user:pass, default disabled)" default:""`
 	EnableRandomUrl     bool             `hcl:"enable_random_url" flagName:"random-url" flagSName:"r" flagDescribe:"Add a random string to the URL" default:"false"`
+	All                 bool             `hcl:"all" flagName:"all" flagDescribe:"Turn on all features: download /, upload /, api, regeorg, ..." default:"false"`
+	API                 bool             `hcl:"api" flagName:"api" flagDescribe:"Enable API for executing commands on the system (BE CAREFUL!)" default:"false"`
+	Regeorg             bool             `hcl:"regeorg" flagName:"regeorg" flagDescribe:"Enable socks4/socks5 proxy using regeorg" default:"false"`
 	RandomUrlLength     int              `hcl:"random_url_length" flagName:"random-url-length" flagDescribe:"Random URL length" default:"8"`
 	Url                 string           `hcl:"url" flagName:"url" flagDescribe:"Specify string for the URL" default:""`
 	FileDownload        string           `hcl:"download" flagName:"download" flagDescribe:"Serve files to download from specified dir" default:""`

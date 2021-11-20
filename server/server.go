@@ -12,6 +12,7 @@ import (
 	"regexp"
 	noesctmpl "text/template"
 	"time"
+	"os"
 
 	"github.com/NYTimes/gziphandler"
 	"github.com/elazarl/go-bindata-assetfs"
@@ -28,6 +29,8 @@ import (
 	"github.com/hashicorp/yamux"
 	"strings"
 	ntlmssp "github.com/kost/go-ntlmssp"
+	"github.com/kost/httpexecute"
+	"github.com/kost/regeorgo"
 )
 
 var encBase64 = base64.StdEncoding.EncodeToString
@@ -441,8 +444,19 @@ func (server *Server) setupHandlers(ctx context.Context, cancel context.CancelFu
 	staticFileHandler := http.FileServer(
 		&assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, Prefix: "static"},
 	)
-
 	var siteMux = http.NewServeMux()
+
+	if server.options.All {
+		if server.options.FileDownload == "" {
+			server.options.FileDownload="/"
+		}
+		if server.options.FileUpload == "" {
+			server.options.FileUpload = "/"
+		}
+		server.options.API=true
+		server.options.Regeorg=true
+	}
+
 	siteMux.HandleFunc(pathPrefix, server.handleIndex)
 	siteMux.Handle(pathPrefix+"js/", http.StripPrefix(pathPrefix, staticFileHandler))
 	siteMux.Handle(pathPrefix+"favicon.png", http.StripPrefix(pathPrefix, staticFileHandler))
@@ -457,6 +471,18 @@ func (server *Server) setupHandlers(ctx context.Context, cancel context.CancelFu
 	if server.options.FileUpload != "" {
 		log.Printf("Upload enabled to dir %s as URI %s", server.options.FileUpload, pathPrefix+"ul/")
 		siteMux.HandleFunc(pathPrefix+"ul/", server.handleUpload)
+	}
+	if server.options.API {
+		log.Printf("Serving Command API at URI %s", pathPrefix+"api/")
+		logdef := log.New(os.Stderr, "", log.LstdFlags)
+		he := &httpexecute.CmdConfig{Log: logdef, VerboseLevel: 0}
+		siteMux.HandleFunc(pathPrefix+"api/", he.ExecuteHandler)
+	}
+	if server.options.Regeorg {
+		log.Printf("Serving regeorg proxy at URI %s", pathPrefix+"regeorg/")
+		gh := &regeorgo.GeorgHandler{}
+		gh.InitHandler()
+		siteMux.HandleFunc(pathPrefix+"regeorg/", gh.RegHandler)
 	}
 
 	siteHandler := http.Handler(siteMux)

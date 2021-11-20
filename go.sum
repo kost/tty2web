@@ -151,6 +151,10 @@ github.com/jteeuwen/go-bindata v3.0.7+incompatible/go.mod h1:JVvhzYOiGBnFSYRyV00
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/kost/go-ntlmssp v0.0.0-20190601005913-a22bdd33b2a4 h1:4VVc/TqlDSrhuWN34tsXQZBwzSB7oNfkoc7lry3GZDI=
 github.com/kost/go-ntlmssp v0.0.0-20190601005913-a22bdd33b2a4/go.mod h1:GF8vL2Lfura79VXDTAYnqz7pC60m6fqFJEUemjzaRC8=
+github.com/kost/httpexecute v0.0.0-20211119174050-f41d120e9db6 h1:r409qbUDmc66x1Nqs3Mp9COxcGPN4T3b/hAV+V90md4=
+github.com/kost/httpexecute v0.0.0-20211119174050-f41d120e9db6/go.mod h1:Jpn5KtqPxNOdz95Qn+sKJxpjlzZNONudaEV34u0/qGU=
+github.com/kost/regeorgo v0.0.0-20211119151427-d6c70e76b00e h1:VgDzuSnk+mf8aTLNbdz4ZVbX7bpJ2aNVZtcqp34U5Vw=
+github.com/kost/regeorgo v0.0.0-20211119151427-d6c70e76b00e/go.mod h1:0cbpzZ1u82sObN1BJS5xLzsFUJ41BsQTmZOzLlyWd6Y=
 github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORNo=
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=

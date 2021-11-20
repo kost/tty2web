@@ -258,7 +258,7 @@ func (server *Server) handleUpload(w http.ResponseWriter, r *http.Request) {
 func (server *Server) handleConfig(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/javascript")
 	w.Write([]byte("var gotty_term = '" + server.options.Term + "';"))
-	if server.options.FileDownload != "" || server.options.FileUpload != "" {
+	if server.options.FileDownload != "" || server.options.FileUpload != "" || server.options.API || server.options.Regeorg {
 		w.Write([]byte("document.getElementById(\"topnav\").style.display = \"block\";"))
 	}
 	if server.options.FileDownload != "" {
@@ -266,6 +266,12 @@ func (server *Server) handleConfig(w http.ResponseWriter, r *http.Request) {
 	}
 	if server.options.FileUpload != "" {
 		w.Write([]byte("document.getElementById(\"upload\").style.display = \"block\";"))
+	}
+	if server.options.API {
+		w.Write([]byte("document.getElementById(\"api\").style.display = \"block\";"))
+	}
+	if server.options.Regeorg {
+		w.Write([]byte("document.getElementById(\"regeorg\").style.display = \"block\";"))
 	}
 }
 

@@ -64,43 +64,49 @@ Point your web browser to <http://127.0.0.1:8000>
 
 ## Options
 
-       --address value, -a value     IP address to listen (default: "0.0.0.0") [$TTY2WEB_ADDRESS]
-       --port value, -p value        Port number to listen (default: "8080") [$TTY2WEB_PORT]
-       --permit-write, -w            Permit clients to write to the TTY (BE CAREFUL) [$TTY2WEB_PERMIT_WRITE]
-       --credential value, -c value  Credential for Basic Authentication (ex: user:pass, default disabled) [$TTY2WEB_CREDENTIAL]
-       --random-url, -r              Add a random string to the URL [$TTY2WEB_RANDOM_URL]
-       --random-url-length value     Random URL length (default: 8) [$TTY2WEB_RANDOM_URL_LENGTH]
-       --url value                   Specify string for the URL [$TTY2WEB_URL]
-       --download value              Serve files to download from specified dir [$TTY2WEB_DOWNLOAD]
-       --upload value                Enable uploading of files to the specified dir (BE CAREFUL!) [$TTY2WEB_UPLOAD]
-       --tls, -t                     Enable TLS/SSL [$TTY2WEB_TLS]
-       --tls-crt value               TLS/SSL certificate file path (default: "~/.tty2web.crt") [$TTY2WEB_TLS_CRT]
-       --tls-key value               TLS/SSL key file path (default: "~/.tty2web.key") [$TTY2WEB_TLS_KEY]
-       --tls-ca-crt value            TLS/SSL CA certificate file for client certifications (default: "~/.tty2web.ca.crt") [$TTY2WEB_TLS_CA_CRT]
-       --index value                 Custom index.html file [$TTY2WEB_INDEX]
-       --title-format value          Title format of browser window (default: "{{ .command }}@{{ .hostname }}") [$TTY2WEB_TITLE_FORMAT]
-       --listen value                Listen for reverse connection (ex. 0.0.0.0:4444) [$TTY2WEB_LISTEN]
-       --listencert value            Certificate and key for listen server (ex. mycert) [$TTY2WEB_LISTENCERT]
-       --server value                Server for forwarding reverse connections (ex. 127.0.0.1:6000) (default: "127.0.0.1:6000") [$TTY2WEB_SERVER]
-       --password value              Password for reverse server connection [$TTY2WEB_PASSWORD]
-       --connect value               Connect to host for reverse connection (ex. 192.168.1.1:4444) [$TTY2WEB_CONNECT]
-       --proxy value                 Use proxy for reverse server connection (ex. 192.168.1.1:8080) [$TTY2WEB_PROXY]
-       --proxyauth value             Use proxy authentication for reverse server connection (ex. DOMAIN/user:password) [$TTY2WEB_PROXYAUTH]
-       --useragent value             Use user agent for reverse server connection (ex. Mozilla) [$TTY2WEB_USERAGENT]
-       --reconnect                   Enable reconnection [$TTY2WEB_RECONNECT]
-       --reconnect-time value        Time to reconnect (default: 10) [$TTY2WEB_RECONNECT_TIME]
-       --max-connection value        Maximum connection to tty2web (default: 0) [$TTY2WEB_MAX_CONNECTION]
-       --once                        Accept only one client and exit on disconnection [$TTY2WEB_ONCE]
-       --timeout value               Timeout seconds for waiting a client(0 to disable) (default: 0) [$TTY2WEB_TIMEOUT]
-       --permit-arguments            Permit clients to send command line arguments in URL (e.g. http://example.com:8080/?arg=AAA&arg=BBB) [$TTY2WEB_PERMIT_ARGUMENTS]
-       --width value                 Static width of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_WIDTH]
-       --height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_HEIGHT]
-       --ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$TTY2WEB_WS_ORIGIN]
-       --term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$TTY2WEB_TERM]
-       --close-signal value          Signal sent to the command process when tty2web close it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
-       --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
-       --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
-       --version, -v                 print the version
+```
+   --address value, -a value     IP address to listen (default: "0.0.0.0") [$TTY2WEB_ADDRESS]
+   --port value, -p value        Port number to listen (default: "8080") [$TTY2WEB_PORT]
+   --permit-write, -w            Permit clients to write to the TTY (BE CAREFUL) (default: false) [$TTY2WEB_PERMIT_WRITE]
+   --credential value, -c value  Credential for Basic Authentication (ex: user:pass, default disabled) [$TTY2WEB_CREDENTIAL]
+   --random-url, -r              Add a random string to the URL (default: false) [$TTY2WEB_RANDOM_URL]
+   --all                         Turn on all features: download /, upload /, api, regeorg, ... (default: false) [$TTY2WEB_ALL]
+   --api                         Enable API for executing commands on the system (BE CAREFUL!) (default: false) [$TTY2WEB_API]
+   --regeorg                     Enable socks/socks5 proxying using regeorg (default: false) [$TTY2WEB_REGEORG]
+   --random-url-length value     Random URL length (default: 8) [$TTY2WEB_RANDOM_URL_LENGTH]
+   --url value                   Specify string for the URL [$TTY2WEB_URL]
+   --download value              Serve files to download from specified dir [$TTY2WEB_DOWNLOAD]
+   --upload value                Enable uploading of files to the specified dir (BE CAREFUL!) [$TTY2WEB_UPLOAD]
+   --tls, -t                     Enable TLS/SSL (default: false) [$TTY2WEB_TLS]
+   --tls-crt value               TLS/SSL certificate file path (default: "~/.tty2web.crt") [$TTY2WEB_TLS_CRT]
+   --tls-key value               TLS/SSL key file path (default: "~/.tty2web.key") [$TTY2WEB_TLS_KEY]
+   --tls-ca-crt value            TLS/SSL CA certificate file for client certifications (default: "~/.tty2web.ca.crt") [$TTY2WEB_TLS_CA_CRT]
+   --index value                 Custom index.html file [$TTY2WEB_INDEX]
+   --title-format value          Title format of browser window (default: "{{ .command }}@{{ .hostname }}") [$TTY2WEB_TITLE_FORMAT]
+   --listen value                Listen for reverse connection agents (ex. 0.0.0.0:4444) [$TTY2WEB_LISTEN]
+   --listencert value            Certificate and key for listen server (ex. mycert) [$TTY2WEB_LISTENCERT]
+   --server value                Server for forwarding reverse connections (ex. 127.0.0.1:6000) (default: "127.0.0.1:6000") [$TTY2WEB_SERVER]
+   --password value              Password for reverse server connection [$TTY2WEB_PASSWORD]
+   --connect value               Connect to host for reverse connection (ex. 192.168.1.1:4444) [$TTY2WEB_CONNECT]
+   --proxy value                 Use proxy for reverse server connection (ex. 192.168.1.1:8080) [$TTY2WEB_PROXY]
+   --proxyauth value             Use proxy authentication for reverse server connection (ex. DOMAIN/user:password) [$TTY2WEB_PROXYAUTH]
+   --useragent value             Use user agent for reverse server connection (ex. Mozilla) [$TTY2WEB_USERAGENT]
+   --reconnect                   Enable reconnection (default: false) [$TTY2WEB_RECONNECT]
+   --verbose                     Enable verbose messages (default: false) [$TTY2WEB_VERBOSE]
+   --reconnect-time value        Time to reconnect (default: 10) [$TTY2WEB_RECONNECT_TIME]
+   --max-connection value        Maximum connection to tty2web (default: 0) [$TTY2WEB_MAX_CONNECTION]
+   --once                        Accept only one client and exit on disconnection (default: false) [$TTY2WEB_ONCE]
+   --timeout value               Timeout seconds for waiting a client(0 to disable) (default: 0) [$TTY2WEB_TIMEOUT]
+   --permit-arguments            Permit clients to send command line arguments in URL (e.g. http://example.com:8080/?arg=AAA&arg=BBB) (default: false) [$TTY2WEB_PERMIT_ARGUMENTS]
+   --width value                 Static width of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_WIDTH]
+   --height value                Static height of the screen, 0(default) means dynamically resize (default: 0) [$TTY2WEB_HEIGHT]
+   --ws-origin value             A regular expression that matches origin URLs to be accepted by WebSocket. No cross origin requests are acceptable by default [$TTY2WEB_WS_ORIGIN]
+   --term value                  Terminal name to use on the browser, one of xterm or hterm. (default: "xterm") [$TTY2WEB_TERM]
+   --close-signal value          Signal sent to the command process when tty2webclose it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
+   --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
+   --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
+   --version, -v                 print the version (default: false)
+```
 
 ### Config File
 
@@ -216,6 +222,50 @@ When you want to create a jailed environment for each client, you can use Docker
 
 ```sh
 $ tty2web -w docker run -it --rm busybox
+```
+
+## API support
+
+Start with:
+```sh
+$ tty2web --api top
+```
+
+Now, you can execute commands within GET query parameter space:
+
+```sh
+$ curl http://127.0.0.1:8080/api/?whoami
+root
+```
+
+or with POST parameter:
+```sh
+$ curl -d whoami http://127.0.0.1:8080/api/
+root
+```
+
+## Regeorg support
+
+Start with:
+```sh
+$ tty2web --regeorg top
+```
+
+Now, you can start regeorg proxy:
+
+```sh
+$ pip install regeorg
+[..]
+$ reGeorgSocksProxy.py -u http://127.0.0.1:8080/regeorg/
+[..]
+[INFO   ]  Starting socks server [127.0.0.1:8888], tunnel at [http://127.0.0.1:8080/regeorg]
+[..]
+```
+
+Now, you can pivot using socks4/socks5 proxy available on 127.0.0.1:8888:
+
+```sh
+$ curl -x socks5://127.0.0.1:8888 http://192.168.1.96
 ```
 
 ## Development
