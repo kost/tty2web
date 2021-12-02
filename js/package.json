@@ -14,7 +14,7 @@
     "dependencies": {
         "@babel/plugin-transform-runtime": "^7.15.8",
         "@babel/polyfill": "^7.12.1",
-        "@babel/runtime": "^7.16.0",
+        "@babel/runtime": "^7.16.3",
         "libapps": "github:yudai/libapps#release-hterm-1.70",
         "xterm": "^4.9.0",
         "xterm-addon-fit": "^0.5.0"
