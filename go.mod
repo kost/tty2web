@@ -18,7 +18,7 @@ require (
 	github.com/mitchellh/gox v1.0.1 // indirect
 	github.com/pkg/errors v0.9.1
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
-	github.com/tcnksm/ghr v0.14.0 // indirect
+	github.com/tcnksm/ghr v0.15.0 // indirect
 	github.com/urfave/cli/v2 v2.16.3
 	github.com/yudai/hcl v0.0.0-20151013225006-5fa2393b3552
 	golang.org/x/crypto v0.0.0-20220919173607-35f4265a4bc0 // indirect

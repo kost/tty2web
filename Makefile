@@ -86,7 +86,7 @@ shasums:
 
 rel:
 	mkdir -p release
-	CGO_ENABLED=0 gox -ldflags="-s -w -X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)" -output="release/{{.Dir}}_{{.OS}}_{{.Arch}}"
+	CGO_ENABLED=0 gox -osarch="!darwin/386" -ldflags="-s -w -X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)" -output="release/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
 draft:
 	ghr -draft v$(VERSION) release/
