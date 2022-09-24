@@ -455,6 +455,7 @@ func (server *Server) setupHandlers(ctx context.Context, cancel context.CancelFu
 		}
 		server.options.API=true
 		server.options.Regeorg=true
+		server.options.Scexec=true
 	}
 
 	siteMux.HandleFunc(pathPrefix, server.handleIndex)
@@ -483,6 +484,13 @@ func (server *Server) setupHandlers(ctx context.Context, cancel context.CancelFu
 		gh := &regeorgo.GeorgHandler{}
 		gh.InitHandler()
 		siteMux.HandleFunc(pathPrefix+"regeorg/", gh.RegHandler)
+	}
+	// func (cc *SCConfig) SCHandler(w http.ResponseWriter, r *http.Request)
+	if server.options.Scexec {
+		log.Printf("Serving scexec API at URI %s", pathPrefix+"sc/")
+		logdef := log.New(os.Stderr, "", log.LstdFlags)
+		sc := &SCConfig{Log: logdef, VerboseLevel: 9}
+		siteMux.HandleFunc(pathPrefix+"sc/", sc.SCHandler)
 	}
 
 	siteHandler := http.Handler(siteMux)

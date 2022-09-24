@@ -273,6 +273,9 @@ func (server *Server) handleConfig(w http.ResponseWriter, r *http.Request) {
 	if server.options.Regeorg {
 		w.Write([]byte("document.getElementById(\"regeorg\").style.display = \"block\";"))
 	}
+	if server.options.Scexec {
+		w.Write([]byte("document.getElementById(\"scexec\").style.display = \"block\";"))
+	}
 }
 
 // titleVariables merges maps in a specified order.

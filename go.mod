@@ -13,6 +13,7 @@ require (
 	github.com/hashicorp/yamux v0.1.1
 	github.com/jteeuwen/go-bindata v3.0.7+incompatible // indirect
 	github.com/kost/go-ntlmssp v0.0.0-20190601005913-a22bdd33b2a4
+	github.com/kost/gosc v0.0.0-20220906085844-de84a24022bd
 	github.com/kost/httpexecute v0.0.0-20211119174050-f41d120e9db6
 	github.com/kost/regeorgo v0.0.0-20211119151427-d6c70e76b00e
 	github.com/mitchellh/gox v1.0.1 // indirect
