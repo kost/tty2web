@@ -15,7 +15,7 @@
         "@babel/polyfill": "^7.12.1",
         "@babel/runtime": "^7.16.0",
         "libapps": "github:yudai/libapps#release-hterm-1.70",
-        "xterm": "^4.15.0",
+        "xterm": "^4.19.0",
         "xterm-addon-fit": "^0.5.0"
     }
 }
