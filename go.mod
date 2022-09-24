@@ -22,7 +22,7 @@ require (
 	github.com/tcnksm/ghr v0.15.0 // indirect
 	github.com/urfave/cli/v2 v2.16.3
 	github.com/yudai/hcl v0.0.0-20151013225006-5fa2393b3552
-	golang.org/x/crypto v0.0.0-20220919173607-35f4265a4bc0 // indirect
+	golang.org/x/crypto v0.0.0-20220924013350-4ba4fb4dd9e7 // indirect
 	golang.org/x/sys v0.0.0-20211023085530-d6a326fbbf70 // indirect
 	gopkg.in/yaml.v2 v2.2.3 // indirect
 )
