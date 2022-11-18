@@ -147,15 +147,6 @@ func TestWriteFromSlave(t *testing.T) {
 		if !bytes.Equal(decoded[:n], message) {
 			t.Fatalf("Unexpected message from master: `%v`", decoded[:n])
 		}
-
-		// decoded := make([]byte, 1024)
-		// n, err = base64.StdEncoding.Decode(decoded, buff.bytes())
-		// if err != nil {
-		// 	t.Fatalf("Unexpected error from Decode(): %s", err)
-		// }
-		// if !bytes.Equal(decoded[:n], message) {
-		// 	t.Fatalf("Unexpected message received: `%s`", decoded[:n])
-		// }
 	})
 }
 
