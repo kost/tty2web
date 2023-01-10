@@ -21,7 +21,7 @@ export interface Terminal {
     setWindowTitle(title: string): void;
     setPreferences(value: object): void;
     onInput(callback: (input: string) => void): void;
-    onResize(callback: (colmuns: number, rows: number) => void): void;
+    onResize(callback: (columns: number, rows: number) => void): void;
     reset(): void;
     deactivate(): void;
     close(): void;
@@ -74,11 +74,11 @@ export class WebTTY {
                 ));
 
 
-                const resizeHandler = (colmuns: number, rows: number) => {
+                const resizeHandler = (columns: number, rows: number) => {
                     connection.send(
                         msgResizeTerminal + JSON.stringify(
                             {
-                                columns: colmuns,
+                                columns: columns,
                                 rows: rows
                             }
                         )
