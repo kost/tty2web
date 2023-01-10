@@ -11,7 +11,7 @@ tty2web: main.go server/*.go webtty/*.go backend/*.go Makefile
 
 tty2web-static: main.go server/*.go webtty/*.go backend/*.go Makefile
 	go get -u ./...
-	go build ${STATIC_OPTIONS}
+	CGO_ENABLED=0 go build ${STATIC_OPTIONS}
 
 .PHONY: asset
 asset: bindata/static/js/tty2web-bundle.js bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css bindata/static/js/sidenav.js
