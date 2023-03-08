@@ -1,6 +1,6 @@
 # ![](https://raw.githubusercontent.com/kost/tty2web/master/resources/favicon.png) tty2web - Share your terminal as a web application (bind/reverse)
 
-[![Build Status](https://travis-ci.org/kost/tty2web.png)](https://travis-ci.org/kost/tty2web)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/kost/tty2web/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/kost/tty2web/tree/master)
 [![MIT License](http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)][license]
 
 [release]: https://github.com/kost/tty2web/releases
