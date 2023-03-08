@@ -1,9 +1,11 @@
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
+import { WebLinksAddon } from 'xterm-addon-web-links';
 import { lib } from "libapps"
 
 const terminal = new Terminal()
 terminal.loadAddon(new FitAddon());
+terminal.loadAddon(new WebLinksAddon());
 
 export class Xterm {
     elem: HTMLElement;
@@ -21,6 +23,8 @@ export class Xterm {
         this.term = new Terminal();
         const fitAddon = new FitAddon();
         this.term.loadAddon(fitAddon);
+        const webLinksAddon = new WebLinksAddon();
+        this.term.loadAddon(webLinksAddon);
 
         if (elem.ownerDocument) {
             this.message = elem.ownerDocument.createElement("div") ;
