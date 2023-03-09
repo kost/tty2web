@@ -50,6 +50,10 @@ func main() {
 			Usage:  "Config file path",
 			EnvVars: []string{"TTY2WEB_CONFIG"},
 		},
+		&cli.BoolFlag{
+			Name:	"help",
+			Usage:	"Displays help",
+		},
 	)
 
 	app.Action = func(c *cli.Context) error {
@@ -74,7 +78,6 @@ func main() {
 			exit(err, 6)
 		}
 
-
 		if appOptions.Listen!="" {
 			log.Printf("Listening for reverse connection %s", appOptions.Listen)
 			go func() {
@@ -89,6 +92,11 @@ func main() {
 			msg := "Error: No command given."
 			cli.ShowAppHelp(c)
 			exit(fmt.Errorf(msg), 1)
+		}
+
+		if c.Bool("help") {
+			cli.ShowAppHelp(c)
+			exit(err, 1)
 		}
 
 		factory, err := localcommand.NewFactory(c.Args().First(), c.Args().Tail(), backendOptions)
