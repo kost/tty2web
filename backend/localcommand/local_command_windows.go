@@ -3,14 +3,14 @@
 package localcommand
 
 import (
-	//"os"
 	"os/exec"
 	"syscall"
 	"time"
-	//"unsafe"
 	"io"
-	"bytes"
+	"log"
 
+	"github.com/creack/pty"
+	// "github.com/photostorm/pty"
 	"github.com/pkg/errors"
 )
 
@@ -32,34 +32,16 @@ type LocalCommand struct {
 	stdout	io.ReadCloser
 	stderr	io.ReadCloser
 
-	stdcomb bytes.Buffer
+	// stdcomb bytes.Buffer
 
-	//pty       *os.File
+	pty	pty.Pty
+	ispty 	bool
 	ptyClosed chan struct{}
 }
 
 func New(command string, argv []string, options ...Option) (*LocalCommand, error) {
 	cmd := exec.Command(command, argv...)
-
-	/* pty, err := pty.Start(cmd)
-	if err != nil {
-		// todo close cmd?
-		return nil, errors.Wrapf(err, "failed to start command `%s`", command)
-	} */
-	stdin, _ := cmd.StdinPipe()
-	stdout, _ := cmd.StdoutPipe()
-	// stderr, _ := cmd.StderrPipe()
-
-	/// var stdcomb bytes.Buffer
-
-	err := cmd.Start()
-	if err != nil {
-		// todo close cmd?
-		return nil, errors.Wrapf(err, "failed to start command `%s`", command)
-	}
-
-	ptyClosed := make(chan struct{})
-
+	pty, err := pty.Start(cmd)
 	lcmd := &LocalCommand{
 		command: command,
 		argv:    argv,
@@ -68,12 +50,27 @@ func New(command string, argv []string, options ...Option) (*LocalCommand, error
 		closeTimeout: DefaultCloseTimeout,
 
 		cmd:       cmd,
-		stdin:     stdin,
-		stdout:    stdout,
+		stdin:     nil,
+		stdout:    nil,
 		//stderr:    stderr,
-		//pty:       pty,
-		ptyClosed: ptyClosed,
+		pty:       pty,
+		ispty:	true,
+		ptyClosed: nil,
 	}
+	if err != nil {
+		log.Printf("Failed to start command `%s` with conpty, trying without (limited experience)", command)
+		// todo close cmd?
+		lcmd.ispty = false
+	        lcmd.stdin, _ = cmd.StdinPipe()
+		lcmd.stdout, _ = cmd.StdoutPipe()
+		// stderr, _ := cmd.StderrPipe()
+		/// var stdcomb bytes.Buffer
+		err2 := lcmd.cmd.Start()
+		if err2 != nil {
+			return nil, errors.Wrapf(err, "failed to start command even without conpty `%s`", command)
+		}
+	}
+	lcmd.ptyClosed = make(chan struct{})
 
 	for _, option := range options {
 		option(lcmd)
@@ -83,10 +80,11 @@ func New(command string, argv []string, options ...Option) (*LocalCommand, error
 	// close pty so that Read() on the pty breaks with an EOF.
 	go func() {
 		defer func() {
-			//lcmd.pty.Close()
+			if lcmd.ispty {
+				lcmd.pty.Close()
+			}
 			close(lcmd.ptyClosed)
 		}()
-
 		lcmd.cmd.Wait()
 	}()
 
@@ -94,13 +92,17 @@ func New(command string, argv []string, options ...Option) (*LocalCommand, error
 }
 
 func (lcmd *LocalCommand) Read(p []byte) (n int, err error) {
+	if (lcmd.ispty) {
+		return lcmd.pty.Read(p)
+	}
 	return lcmd.stdout.Read (p)
-	//return lcmd.pty.Read(p)
 }
 
 func (lcmd *LocalCommand) Write(p []byte) (n int, err error) {
+	if (lcmd.ispty) {
+		return lcmd.pty.Write(p)
+	}
 	return lcmd.stdin.Write(p)
-	//return lcmd.pty.Write(p)
 }
 
 func (lcmd *LocalCommand) Close() error {
@@ -126,29 +128,15 @@ func (lcmd *LocalCommand) WindowTitleVariables() map[string]interface{} {
 }
 
 func (lcmd *LocalCommand) ResizeTerminal(width int, height int) error {
-	/*window := struct {
-		row uint16
-		col uint16
-		x   uint16
-		y   uint16
-	}{
-		uint16(height),
-		uint16(width),
-		0,
-		0,
-	}
-	_, _, errno := syscall.Syscall(
-		syscall.SYS_IOCTL,
-		lcmd.pty.Fd(),
-		syscall.TIOCSWINSZ,
-		uintptr(unsafe.Pointer(&window)),
-	)
-	if errno != 0 {
+	// only conpty support resizing of terminal
+	if lcmd.ispty {
+		winsize:=&pty.Winsize{
+			Rows: uint16(height),
+			Cols: uint16(width),
+		}
+		errno:=pty.Setsize(lcmd.pty, winsize)
 		return errno
-	} else {
-		return nil
 	}
-	*/
 	return nil
 }
 
