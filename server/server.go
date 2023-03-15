@@ -5,6 +5,7 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"html/template"
+	"io/fs"
 	"io/ioutil"
 	"log"
 	"net"
@@ -15,10 +16,10 @@ import (
 	"os"
 
 	"github.com/NYTimes/gziphandler"
-	"github.com/elazarl/go-bindata-assetfs"
 	"github.com/gorilla/websocket"
 	"github.com/pkg/errors"
 
+	"github.com/kost/tty2web/bindata"
 	"github.com/kost/tty2web/pkg/homedir"
 	"github.com/kost/tty2web/pkg/randomstring"
 	"github.com/kost/tty2web/webtty"
@@ -277,7 +278,7 @@ type Server struct {
 // New creates a new instance of Server.
 // Server will use the New() of the factory provided to handle each request.
 func New(factory Factory, options *Options) (*Server, error) {
-	indexData, err := Asset("static/index.html")
+	indexData, err := bindata.Fs.ReadFile("static/index.html")
 	if err != nil {
 		panic("index not found") // must be in bindata
 	}
@@ -441,9 +442,12 @@ func (server *Server) Run(ctx context.Context, options ...RunOption) error {
 }
 
 func (server *Server) setupHandlers(ctx context.Context, cancel context.CancelFunc, pathPrefix string, counter *counter) http.Handler {
-	staticFileHandler := http.FileServer(
-		&assetfs.AssetFS{Asset: Asset, AssetDir: AssetDir, Prefix: "static"},
-	)
+	fs, err := fs.Sub(bindata.Fs, "static")
+	if err != nil {
+		log.Fatalf("failed to open static/ subdirectory of embedded filesystem: %v", err)
+	}
+	staticFileHandler := http.FileServer(http.FS(fs))
+
 	var siteMux = http.NewServeMux()
 
 	if server.options.All {

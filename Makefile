@@ -15,16 +15,11 @@ tty2web-static: main.go server/*.go webtty/*.go backend/*.go Makefile
 
 .PHONY: asset
 asset: bindata/static/js/tty2web-bundle.js bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css bindata/static/js/sidenav.js
-	go-bindata -prefix bindata -pkg server -ignore=\\.gitkeep -o server/asset.go bindata/...
-	gofmt -w server/asset.go
 
 .PHONY: all
 all: asset tty2web
 
-bindata:
-	mkdir -p bindata
-
-bindata/static: bindata
+bindata/static:
 	mkdir -p bindata/static
 
 bindata/static/index.html: bindata/static resources/index.html
@@ -70,7 +65,6 @@ js/node_modules/webpack:
 tools:
 	go install github.com/mitchellh/gox@latest
 	go install github.com/tcnksm/ghr@latest
-	go install github.com/go-bindata/go-bindata/...
 
 test:
 	if [ `go fmt $(go list ./... | grep -v /vendor/) | wc -l` -gt 0 ]; then echo "go fmt error"; exit 1; fi

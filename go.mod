@@ -5,7 +5,6 @@ go 1.18
 require (
 	github.com/NYTimes/gziphandler v1.1.1
 	github.com/creack/pty v1.1.18
-	github.com/elazarl/go-bindata-assetfs v1.0.1
 	github.com/fatih/structs v1.1.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/hashicorp/yamux v0.1.1

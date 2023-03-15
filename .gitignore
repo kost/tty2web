@@ -1,5 +1,5 @@
 tty2web
-bindata
+bindata/static
 builds
 js/node_modules/*
 go.mod
