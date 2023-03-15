@@ -3,6 +3,8 @@ GIT_COMMIT = `git rev-parse HEAD | cut -c1-7`
 VERSION = 2.8.0
 BUILD_OPTIONS = -ldflags "-X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
 STATIC_OPTIONS = -ldflags "-extldflags='-static' -X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)"
+WEBPACK_MODE = production
+# JSMAPFILE = bindata/static/js/tty2web-bundle.js.map # uncomment if map needed
 
 
 tty2web: main.go server/*.go webtty/*.go backend/*.go Makefile
@@ -14,7 +16,7 @@ tty2web-static: main.go server/*.go webtty/*.go backend/*.go Makefile
 	CGO_ENABLED=0 go build ${STATIC_OPTIONS}
 
 .PHONY: asset
-asset: bindata/static/js/tty2web-bundle.js bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css bindata/static/js/sidenav.js
+asset: bindata/static/js/tty2web-bundle.js $(JSMAPFILE) bindata/static/index.html bindata/static/favicon.png bindata/static/css/index.css bindata/static/css/xterm.css bindata/static/css/xterm_customize.css bindata/static/js/sidenav.js
 
 .PHONY: all
 all: asset tty2web
@@ -33,6 +35,9 @@ bindata/static/js: bindata/static
 
 bindata/static/js/tty2web-bundle.js: bindata/static/js js/dist/tty2web-bundle.js
 	cp js/dist/tty2web-bundle.js bindata/static/js/tty2web-bundle.js
+
+bindata/static/js/tty2web-bundle.js.map: bindata/static/js js/dist/tty2web-bundle.js.map
+	cp js/dist/tty2web-bundle.js.map bindata/static/js/tty2web-bundle.js.map
 
 bindata/static/js/sidenav.js: bindata/static/js resources/js/sidenav.js
 	cp resources/js/sidenav.js bindata/static/js/sidenav.js
@@ -55,7 +60,7 @@ js/node_modules/xterm/dist/xterm.css:
 
 js/dist/tty2web-bundle.js: js/src/* js/node_modules/webpack
 	cd js && \
-	npm exec webpack
+	npm exec webpack -- --mode=$(WEBPACK_MODE)
 	# `npm bin`/webpack
 
 js/node_modules/webpack:
