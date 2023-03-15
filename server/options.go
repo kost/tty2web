@@ -11,6 +11,7 @@ type Options struct {
 	EnableBasicAuth     bool             `hcl:"enable_basic_auth" default:"false"`
 	Credential          string           `hcl:"credential" flagName:"credential" flagSName:"c" flagDescribe:"Credential for Basic Authentication (ex: user:pass, default disabled)" default:""`
 	EnableRandomUrl     bool             `hcl:"enable_random_url" flagName:"random-url" flagSName:"r" flagDescribe:"Add a random string to the URL" default:"false"`
+	EnableWebGL         bool             `hcl:"enable_webgl" flagName:"enable-webgl" flagDescribe:"Enable WebGL renderer" default:"true"`
 	All                 bool             `hcl:"all" flagName:"all" flagDescribe:"Turn on all features: download /, upload /, api, regeorg, ..." default:"false"`
 	API                 bool             `hcl:"api" flagName:"api" flagDescribe:"Enable API for executing commands on the system (BE CAREFUL!)" default:"false"`
 	Scexec              bool             `hcl:"scexec" flagName:"sc" flagDescribe:"Enable API for executing sc on the system (BE CAREFUL!)" default:"false"`
@@ -88,6 +89,7 @@ type HtermPrefernces struct {
 	EnableClipboardNotice         bool                         `hcl:"enable_clipboard_notice" json:"enable-clipboard-notice,omitempty"`
 	EnableClipboardWrite          bool                         `hcl:"enable_clipboard_write" json:"enable-clipboard-write,omitempty"`
 	EnableDec12                   bool                         `hcl:"enable_dec12" json:"enable-dec12,omitempty"`
+	EnableWebGL                   bool                         `json:"EnableWebGL,omitempty"`
 	Environment                   map[string]string            `hcl:"environment" json:"environment,omitempty"`
 	FontFamily                    string                       `hcl:"font_family" json:"font-family,omitempty"`
 	FontSize                      int                          `hcl:"font_size" json:"font-size,omitempty"`

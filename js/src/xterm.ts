@@ -1,6 +1,7 @@
 import { Terminal } from 'xterm';
 import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
+import { WebglAddon } from 'xterm-addon-webgl';
 import { lib } from "libapps"
 
 const terminal = new Terminal()
@@ -80,6 +81,11 @@ export class Xterm {
     };
 
     setPreferences(value: object) {
+        Object.keys(value).forEach((key) => {
+           if (key == "EnableWebGL" && key) {
+               this.term.loadAddon(new WebglAddon());
+           }
+        });
     };
 
     onInput(callback: (input: string) => void) {

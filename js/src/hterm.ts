@@ -53,7 +53,9 @@ export class Hterm {
 
     setPreferences(value: object) {
         Object.keys(value).forEach((key) => {
-            this.term.getPrefs().set(key, value[key]);
+            if (key != "EnableWebGL") {
+                this.term.getPrefs().set(key, value[key]);
+            }
         });
     };
 

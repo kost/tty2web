@@ -60,7 +60,8 @@ js/node_modules/xterm/dist/xterm.css:
 
 js/dist/tty2web-bundle.js: js/src/* js/node_modules/webpack
 	cd js && \
-	`npm bin`/webpack
+	npm exec webpack
+	# `npm bin`/webpack
 
 js/node_modules/webpack:
 	cd js && \
