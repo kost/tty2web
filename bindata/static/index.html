@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+  <head>
+    <title>{{ .title }}</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="./css/xterm.css" />
+    <link rel="stylesheet" href="./css/xterm_customize.css" />
+  </head>
+  <body>
+
+<div id="topnav" class="topleftnav" onmouseover="openNav()">
+</div>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a href="dl/" id="download" target="_blank" rel="noopener noreferrer">Download</a>
+  <a href="ul/" id="upload" target="_blank" rel="noopener noreferrer">Upload</a>
+  <a href="api/" id="api" target="_blank" rel="noopener noreferrer">API</a>
+  <a href="sc/" id="scexec" target="_blank" rel="noopener noreferrer">Scexec</a>
+  <a href="regeorg/" id="regeorg" target="_blank" rel="noopener noreferrer">Regeorg</a>
+  <a href="javascript:void(0)" onclick="closeTop()">Hide Navigation</a>
+</div>
+
+    <div id="terminal"></div>
+    <script src="./auth_token.js"></script>
+    <script src="./config.js"></script>
+    <script src="./js/tty2web-bundle.js"></script>
+    <script src="./js/sidenav.js"></script>
+  </body>
+</html>
