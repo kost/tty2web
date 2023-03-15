@@ -8,7 +8,7 @@
 [license]: https://github.com/kost/tty2web/blob/master/LICENSE
 
 tty2web is a simple command line tool that turns your CLI tools into web applications. it is based on [Gotty](https://github.com/yudai/gotty), but heavily improved.
-Improvements include implementation of bind and reverse mode (useful for penetration testing/NAT traversal), bidirectional file transfer (download/upload), upgraded xterm.js, basic support for Windows, etc.
+Improvements include implementation of bind and reverse mode (useful for penetration testing/NAT traversal), bidirectional file transfer (download/upload), upgraded xterm.js, support for Windows (and ConPTY!), etc.
 
 ![Screenshot](https://raw.githubusercontent.com/kost/tty2web/master/screenshot.gif)
 
@@ -23,7 +23,9 @@ Download the latest stable binary file from the [Releases](https://github.com/ko
 If you have a Go language environment, you can install tty2web with the `go get` command. However, this command builds a binary file from the latest master branch, which can include unstable or breaking changes. tty2web requires go1.10 or later (dependency github.com/urfave/cli have strings.Builder).
 
 ```sh
-$ go get github.com/kost/tty2web
+$ git clone github.com/kost/tty2web
+$ cd tty2web
+$ go install
 ```
 
 I would suggest to build it with following commands (make sure that you have $GOPATH set to valid value):
@@ -274,8 +276,7 @@ You can build a binary using the following commands. There is basic Windows supp
 
 ```sh
 # Install tools
-go get github.com/jteeuwen/go-bindata/...
-go get -u github.com/golang/dep/cmd/dep
+make tools
 
 # Build
 make
@@ -285,19 +286,11 @@ To build the frontend part (JS files and other static files), you need `npm`.
 
 ## Windows support
 
-There is limited Windows support because pty support is still new on Windows. Currently, only listening (bind) mode works and you will have most luck with specific programs. In testing, cmd.exe did not work, but powershell.exe works:
+There is solid Windows support by using conpty. conpty support is available on Windows 10+ versions. It should fallback if conpty is not supported to standard stdin/stdout, but that is limited. In that fallback mode, cmd.exe did not work, but powershell.exe works:
 
 ```DOS .bat
 tty2web.exe -w powershell.exe
 ```
-
-Current issues:
-
--   Reverse mode does not work (Bind only!)
--   Stdin/Stdout only redirected, stderr is not (so errors will not be displayed!)
--   cmd.exe does not work, but powershell.exe does
-
-Some of the applications work better if you run it with winpty. Windows support is not my focus, but if you send me pull request, I would gladly accept it.
 
 ## Architecture
 
@@ -312,6 +305,7 @@ tty2web uses [xterm.js](https://xtermjs.org/) and [hterm](https://groups.google.
 ### Terminal/SSH on Web Browsers
 
 -   [gotty](https://github.com/yudai/gotty): Original gotty on which tty2web is based
+-   [maintaned gotty](https://github.com/sorenisanerd/gotty): Maintained gotty
 -   [Secure Shell (Chrome App)](https://chrome.google.com/webstore/detail/secure-shell/pnhechapfaindjhompbnflcldabbghjo): If you are a chrome user and need a "real" SSH client on your web browser, perhaps the Secure Shell app is what you want
 -   [Wetty](https://github.com/krishnasrinivas/wetty): Node based web terminal (SSH/login)
 -   [ttyd](https://tsl0922.github.io/ttyd): C port of GoTTY with CJK and IME support
