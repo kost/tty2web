@@ -3,7 +3,6 @@
 package localcommand
 
 import (
-	"os"
 	"os/exec"
 	"syscall"
 	"time"
@@ -26,7 +25,7 @@ type LocalCommand struct {
 	closeTimeout time.Duration
 
 	cmd       *exec.Cmd
-	pty       *os.File
+	pty       pty.Pty
 	ptyClosed chan struct{}
 }
 
