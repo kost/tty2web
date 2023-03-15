@@ -8,7 +8,15 @@
 [license]: https://github.com/kost/tty2web/blob/master/LICENSE
 
 tty2web is a simple command line tool that turns your CLI tools into web applications. it is based on [Gotty](https://github.com/yudai/gotty), but heavily improved.
-Improvements include implementation of bind and reverse mode (useful for penetration testing/NAT traversal), bidirectional file transfer (download/upload), upgraded xterm.js, support for Windows (and ConPTY!), etc.
+
+Improvements include:
+
+- implementation of bind and reverse mode (useful for penetration testing/NAT traversal),
+- bidirectional file transfer (download/upload)
+- regeorg/SOCKS 5 support (bind/reverse mode)
+- API support (run commands over API)
+- support for Windows (and conpty!)
+- JS components upgrade (including xterm.js)
 
 ![Screenshot](https://raw.githubusercontent.com/kost/tty2web/master/screenshot.gif)
 
