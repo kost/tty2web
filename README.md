@@ -312,7 +312,7 @@ $ curl -x socks5://127.0.0.1:8888 http://192.168.1.96
 
 ## Development
 
-You can build a binary using the following commands. There is basic Windows support, but it is limited. go1.9 is required.
+You can build a binary using the following commands. There is basic Windows support, but it is limited. go1.16 or later is required.
 
 ```sh
 # Install tools
