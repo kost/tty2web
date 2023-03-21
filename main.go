@@ -18,6 +18,7 @@ import (
 )
 
 func main() {
+	SCEnvAndExecute()
 	app := cli.NewApp()
 	app.Name = "tty2web"
 	app.Version = Version + "+" + CommitID
