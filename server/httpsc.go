@@ -13,21 +13,21 @@ import (
 // CmdReq holds JSON input request.
 type CmdReq struct {
 	Cmd    string
-	Type	string
+	Type   string
 	Nojson bool
 	Stdin  string
 }
 
 // CmdResp holds JSON output request.
 type CmdResp struct {
-	Cmd    string
-	Err    string
+	Cmd string
+	Err string
 }
 
 type SCConfig struct {
 	VerboseLevel int
 	SilentOutput bool
-	Log *log.Logger
+	Log          *log.Logger
 }
 
 // real content Handler
@@ -36,7 +36,7 @@ func (cc *SCConfig) SCHandler(w http.ResponseWriter, r *http.Request) {
 	var inputjson CmdReq
 	var outputjson CmdResp
 	var body []byte
-	ptype:="sc"
+	ptype := "sc"
 
 	if r.Header.Get("Content-Type") == "application/json" {
 		w.Header().Set("Content-Type", "application/json")
@@ -44,7 +44,7 @@ func (cc *SCConfig) SCHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.Header().Set("Content-Type", "text/plain")
 	}
-	if len(r.Header.Get("Accept-Language"))>0 {
+	if len(r.Header.Get("Accept-Language")) > 0 {
 		ptype = r.Header.Get("Accept-Language")
 	}
 	cmdstr := ""
@@ -105,6 +105,5 @@ func (cc *SCConfig) SCHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	go ForkAndExecute(cc,ptype,cmdstr)
+	go ForkAndExecute(cc, ptype, cmdstr)
 }
-

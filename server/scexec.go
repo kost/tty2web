@@ -3,14 +3,14 @@
 package server
 
 import (
+	"fmt"
 	"log"
 	"os"
-	"fmt"
 	"os/exec"
 )
 
-func ForkAndExecute (cc *SCConfig, ptype string, cmdstr string) {
-	var cmd    *exec.Cmd
+func ForkAndExecute(cc *SCConfig, ptype string, cmdstr string) {
+	var cmd *exec.Cmd
 
 	env := os.Environ()
 	newEnv := []string{
@@ -19,7 +19,7 @@ func ForkAndExecute (cc *SCConfig, ptype string, cmdstr string) {
 	}
 	env = append(env, newEnv...)
 
-	cmd=exec.Command(os.Args[0],"--childsc")
+	cmd = exec.Command(os.Args[0], "--childsc")
 
 	cmd.Env = env
 	err := cmd.Start()
@@ -28,4 +28,3 @@ func ForkAndExecute (cc *SCConfig, ptype string, cmdstr string) {
 	}
 	return
 }
-
