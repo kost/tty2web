@@ -16,7 +16,7 @@ Improvements include:
 - regeorg/SOCKS 5 support (bind/reverse mode)
 - API support (run commands over API)
 - support for Windows (and conpty!)
-- JS components upgrade (including xterm.js)
+- components upgrade (go and js including xterm.js)
 
 ![Screenshot](https://raw.githubusercontent.com/kost/tty2web/master/screenshot.gif)
 
