@@ -19,7 +19,14 @@ func ForkAndExecute(cc *SCConfig, ptype string, cmdstr string) {
 	}
 	env = append(env, newEnv...)
 
-	cmd = exec.Command(os.Args[0], "--childsc")
+	exfn, erre := os.Executable()
+	if erre != nil {
+		log.Fatal(erre)
+		return
+	}
+	log.Printf("Executing %s with T2W_CMD=%s T2W_SC=%s", exfn, ptype, cmdstr)
+
+	cmd = exec.Command(exfn, "--childsc")
 
 	cmd.Env = env
 	err := cmd.Start()

