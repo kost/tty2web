@@ -12,6 +12,7 @@ tty2web is a simple command line tool that turns your CLI tools into web applica
 Improvements include:
 
 - implementation of bind and reverse mode (useful for penetration testing/NAT traversal),
+- DNS tunnel support - (sub)domain you control is required
 - bidirectional file transfer (download/upload)
 - regeorg/SOCKS 5 support (bind/reverse mode)
 - API support (run commands over API)
@@ -258,6 +259,9 @@ root
 ```
 
 ## DNS support
+
+Requirement to have DNS tunneling working is that you have (sub)domain you control. You need to setup NS pointing to
+where you will host your DNS server. From there you will access to the client.
 
 Start DNS server:
 ```sh
