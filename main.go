@@ -79,6 +79,24 @@ func main() {
 			exit(err, 6)
 		}
 
+		if appOptions.Dns!="" {
+			if appOptions.DnsKey == "" {
+				appOptions.DnsKey=GenerateKey()
+				log.Printf("No password specified, generated following (recheck if same on both sides): %s", appOptions.DnsKey)
+			}
+			if len(appOptions.DnsKey) != 64 {
+				fmt.Fprintf(os.Stderr, "Specified key of incorrect size for DNS (should be 64 in hex)\n")
+				os.Exit(1)
+			}
+			if appOptions.DnsListen!="" {
+				go func() {
+				log.Fatal(ServeDNS (appOptions.DnsListen,appOptions.Dns, appOptions.Server, appOptions.DnsKey, appOptions.DnsDelay))
+				}()
+				wait4Signals()
+				return nil
+			}
+		}
+
 		if appOptions.Listen!="" {
 			log.Printf("Listening for reverse connection %s", appOptions.Listen)
 			go func() {

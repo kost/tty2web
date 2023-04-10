@@ -18,6 +18,7 @@ type Options struct {
 	Regeorg             bool             `hcl:"regeorg" flagName:"regeorg" flagDescribe:"Enable socks4/socks5 proxy using regeorg" default:"false"`
 	RandomUrlLength     int              `hcl:"random_url_length" flagName:"random-url-length" flagDescribe:"Random URL length" default:"8"`
 	Url                 string           `hcl:"url" flagName:"url" flagDescribe:"Specify string for the URL" default:""`
+	JSURL               string           `hcl:"jsurl" flagName:"jsurl" flagDescribe:"Specify string for custom URL serving Javascript files (useful for DNS)" default:""`
 	FileDownload        string           `hcl:"download" flagName:"download" flagDescribe:"Serve files to download from specified dir" default:""`
 	FileUpload          string           `hcl:"upload" flagName:"upload" flagDescribe:"Enable uploading of files to the specified dir (BE CAREFUL!)" default:""`
 	EnableTLS           bool             `hcl:"enable_tls" flagName:"tls" flagSName:"t" flagDescribe:"Enable TLS/SSL" default:"false"`
@@ -27,6 +28,10 @@ type Options struct {
 	TLSCACrtFile        string           `hcl:"tls_ca_crt_file" flagName:"tls-ca-crt" flagDescribe:"TLS/SSL CA certificate file for client certifications" default:"~/.tty2web.ca.crt"`
 	IndexFile           string           `hcl:"index_file" flagName:"index" flagDescribe:"Custom index.html file" default:""`
 	TitleFormat         string           `hcl:"title_format" flagName:"title-format" flagSName:"" flagDescribe:"Title format of browser window" default:"{{ .command }}@{{ .hostname }}"`
+	Dns                 string           `hcl:"dns" flagName:"dns" flagSName:"" flagDescribe:"Use domain for DNS tunneling (ex. example.com)" default:""`
+	DnsListen           string           `hcl:"dnslisten" flagName:"dnslisten" flagSName:"" flagDescribe:"Listen for reverse connection agents (ex. 0.0.0.0:53)" default:""`
+	DnsKey              string           `hcl:"dnskey" flagName:"dnskey" flagSName:"" flagDescribe:"Password/Key to use for DNS tunnel" default:""`
+	DnsDelay            string           `hcl:"dnsdelay" flagName:"dnsdelay" flagSName:"" flagDescribe:"Delay time between polling for DNS requests" default:"200ms"`
 	Listen              string           `hcl:"listen" flagName:"listen" flagSName:"" flagDescribe:"Listen for reverse connection agents (ex. 0.0.0.0:4444)" default:""`
 	ListenCert          string           `hcl:"listencert" flagName:"listencert" flagSName:"" flagDescribe:"Certificate and key for listen server (ex. mycert)" default:""`
 	Server              string           `hcl:"server" flagName:"server" flagSName:"" flagDescribe:"Server for forwarding reverse connections (ex. 127.0.0.1:6000)" default:"127.0.0.1:6000"`

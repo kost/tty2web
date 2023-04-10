@@ -278,6 +278,14 @@ func (server *Server) handleConfig(w http.ResponseWriter, r *http.Request) {
 	if server.options.Scexec {
 		w.Write([]byte("document.getElementById(\"scexec\").style.display = \"block\";"))
 	}
+	jsurl:="./js"
+	if server.options.JSURL != "" {
+		jsurl=server.options.JSURL
+	}
+	w.Write([]byte("var jsb = document.createElement(\"script\"); jsb.src = \"" + jsurl + "/tty2web-bundle.js\";"))
+	w.Write([]byte("jsb.onerror = e => console.log(\"error loading tty2web-bundle.js\"); document.head.appendChild(jsb);"))
+	w.Write([]byte("var jss = document.createElement(\"script\"); jss.src = \"" + jsurl + "/sidenav.js\";"))
+	w.Write([]byte("jss.onerror = e => console.log(\"error loading sidenav.js\"); document.head.appendChild(jss);"))
 }
 
 // titleVariables merges maps in a specified order.

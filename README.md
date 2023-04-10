@@ -257,6 +257,26 @@ $ curl -d whoami http://127.0.0.1:8080/api/
 root
 ```
 
+## DNS support
+
+Start DNS server:
+```sh
+$ tty2web --dns example.com --dnslisten :53 --server 127.0.0.1:8000
+```
+
+Start DNS client:
+```sh
+$ tty2web --dns example.com --dnskey <dnskey> top
+```
+
+Note that DNS tunneling can be slow.
+
+You can speed up DNS boot up time to fetch initial javascript from Javascript on the Internet URL:
+
+```sh
+$ tty2web --dns example.com --dnskey <key> --jsurl http://cdn.jsdelivr.net/gh/kost/tty2web/bindata/static/js/ top
+```
+
 ## SC support
 
 Start with:
