@@ -29,7 +29,7 @@ Download the latest stable binary file from the [Releases](https://github.com/ko
 
 ## `go install` Installation (Development)
 
-If you have a Go language environment, you can install tty2web with the `go install` command. However, this command builds a binary file from the latest master branch, which can include unstable or breaking changes. tty2web requires go1.16 or later (embed directive and dependency github.com/urfave/cli have strings.Builder). Also, note that you have to checkot source code and then run go install due to using forked version of pty module.
+If you have a Go language environment, you can install tty2web with the `go install` command. However, this command builds a binary file from the latest master branch, which can include unstable or breaking changes. tty2web requires go1.18 or later (embed directive and dependency github.com/urfave/cli have strings.Builder). Also, note that you have to checkot source code and then run go install due to using forked version of pty module.
 
 ```sh
 $ git clone github.com/kost/tty2web
