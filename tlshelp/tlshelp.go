@@ -1,4 +1,4 @@
-package main
+package tlshelp
 
 import (
 	"crypto/rand"
@@ -49,7 +49,7 @@ func RandBigInt(max *big.Int) *big.Int {
 	return r
 }
 
-func genPair(keysize int) (cacert []byte, cakey []byte, cert []byte, certkey []byte) {
+func GenPair(keysize int) (cacert []byte, cakey []byte, cert []byte, certkey []byte) {
 
 	serialNumberLimit := new(big.Int).Lsh(big.NewInt(1), 128)
 
@@ -105,7 +105,7 @@ func genPair(keysize int) (cacert []byte, cakey []byte, cert []byte, certkey []b
 
 }
 
-func verifyCert(cacert []byte, cert []byte) bool {
+func VerifyCert(cacert []byte, cert []byte) bool {
 	caBin, _ := x509.ParseCertificate(cacert)
 	cert2Bin, _ := x509.ParseCertificate(cert)
 	err3 := cert2Bin.CheckSignatureFrom(caBin)
@@ -115,7 +115,7 @@ func verifyCert(cacert []byte, cert []byte) bool {
 	return true
 }
 
-func getPEMs(cert []byte, key []byte) (pemcert []byte, pemkey []byte) {
+func GetPEMs(cert []byte, key []byte) (pemcert []byte, pemkey []byte) {
 	certPem := pem.EncodeToMemory(&pem.Block{
 		Type:  "CERTIFICATE",
 		Bytes: cert,
@@ -129,7 +129,7 @@ func getPEMs(cert []byte, key []byte) (pemcert []byte, pemkey []byte) {
 	return certPem, keyPem
 }
 
-func getTLSPair(certPem []byte, keyPem []byte) (tls.Certificate, error) {
+func GetTLSPair(certPem []byte, keyPem []byte) (tls.Certificate, error) {
 	tlspair, errt := tls.X509KeyPair(certPem, keyPem)
 	if errt != nil {
 		return tlspair, errt
@@ -137,9 +137,9 @@ func getTLSPair(certPem []byte, keyPem []byte) (tls.Certificate, error) {
 	return tlspair, nil
 }
 
-func getRandomTLS(keysize int) (tls.Certificate, error) {
-	_, _, cert, certkey := genPair(keysize)
-	certPem, keyPem := getPEMs(cert, certkey)
-	tlspair, err := getTLSPair(certPem, keyPem)
+func GetRandomTLS(keysize int) (tls.Certificate, error) {
+	_, _, cert, certkey := GenPair(keysize)
+	certPem, keyPem := GetPEMs(cert, certkey)
+	tlspair, err := GetTLSPair(certPem, keyPem)
 	return tlspair, err
 }

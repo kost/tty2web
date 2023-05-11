@@ -23,6 +23,7 @@ import (
 	"github.com/kost/tty2web/pkg/homedir"
 	"github.com/kost/tty2web/pkg/randomstring"
 	"github.com/kost/tty2web/webtty"
+	"github.com/kost/tty2web/tlshelp"
 	"github.com/kost/httpexecute"
 	"github.com/kost/regeorgo"
 )
@@ -126,6 +127,23 @@ func (server *Server) Run(ctx context.Context, options ...RunOption) error {
 
 	srvErr := make(chan error, 1)
 
+	if server.options.EnableTLS {
+		crtFile := homedir.Expand(server.options.TLSCrtFile)
+		keyFile := homedir.Expand(server.options.TLSKeyFile)
+		log.Printf("TLS crt file: " + crtFile)
+		log.Printf("TLS key file: " + keyFile)
+		cer, err := tls.LoadX509KeyPair(crtFile,keyFile)
+		if err != nil {
+			log.Printf("Error loading TLS key and crt file %s and %s: %v. Generating random one!", crtFile, keyFile, err)
+
+			cer, err = tlshelp.GetRandomTLS(2048)
+			if err != nil {
+				return errors.Wrapf(err, "error generating and failed to load tls cert and key `%s` and `%s`", crtFile, keyFile)
+			}
+		}
+		config := &tls.Config{Certificates: []tls.Certificate{cer}}
+		srv.TLSConfig=config
+	}
 	if server.options.Dns != "" {
 		go func() {
 			session, err = DnsConnectSocks(server.options.Dns, server.options.DnsKey, server.options.DnsDelay)
@@ -134,7 +152,11 @@ func (server *Server) Run(ctx context.Context, options ...RunOption) error {
 				srvErr <- err
 				return
 			}
-			err = srv.Serve(session)
+			if server.options.EnableTLS {
+				err = srv.ServeTLS(session, "", "")
+			} else {
+				err = srv.Serve(session)
+			}
 			if err != nil {
 				srvErr <- err
 			}
@@ -160,12 +182,7 @@ func (server *Server) Run(ctx context.Context, options ...RunOption) error {
 			}
 			go func() {
 				if server.options.EnableTLS {
-					crtFile := homedir.Expand(server.options.TLSCrtFile)
-					keyFile := homedir.Expand(server.options.TLSKeyFile)
-					log.Printf("TLS crt file: " + crtFile)
-					log.Printf("TLS key file: " + keyFile)
-
-					err = srv.ServeTLS(listener, crtFile, keyFile)
+					err = srv.ServeTLS(listener, "", "")
 				} else {
 					err = srv.Serve(listener)
 				}
@@ -181,7 +198,11 @@ func (server *Server) Run(ctx context.Context, options ...RunOption) error {
 					srvErr <- err
 					return
 				}
-				err = srv.Serve(session)
+				if server.options.EnableTLS {
+					err = srv.ServeTLS(session, "", "")
+				} else {
+					err = srv.Serve(session)
+				}
 				if err != nil {
 					srvErr <- err
 				}

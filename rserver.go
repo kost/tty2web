@@ -10,6 +10,7 @@ import (
 
 	"bufio"
 	"github.com/hashicorp/yamux"
+	"github.com/kost/tty2web/tlshelp"
 	"strconv"
 	"strings"
 	"time"
@@ -29,7 +30,7 @@ func listenForAgents(verbose bool, tlslisten bool, address string, clients strin
 	if tlslisten {
 		log.Printf("Listening for agents on %s using TLS", address)
 		if certificate == "" {
-			cer, err = getRandomTLS(2048)
+			cer, err = tlshelp.GetRandomTLS(2048)
 			log.Println("No TLS certificate. Generated random one.")
 		} else {
 			cer, err = tls.LoadX509KeyPair(certificate+".crt", certificate+".key")
