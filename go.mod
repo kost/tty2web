@@ -8,12 +8,13 @@ require (
 	github.com/fatih/structs v1.1.0
 	github.com/gorilla/websocket v1.5.0
 	github.com/hashicorp/yamux v0.1.1
+	github.com/kost/dnstun v0.0.0-20230511164951-6e7f5656a900
 	github.com/kost/go-ntlmssp v0.0.0-20190601005913-a22bdd33b2a4
 	github.com/kost/gosc v0.0.0-20230110210303-490723ad1528
 	github.com/kost/httpexecute v0.0.0-20211119174050-f41d120e9db6
 	github.com/kost/regeorgo v0.0.0-20211119151427-d6c70e76b00e
 	github.com/pkg/errors v0.9.1
-	github.com/urfave/cli/v2 v2.25.0
+	github.com/urfave/cli/v2 v2.25.3
 	github.com/yudai/hcl v0.0.0-20151013225006-5fa2393b3552
 )
 
@@ -25,17 +26,16 @@ require (
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/kost/chashell v0.0.0-20230409212000-cf0fbd106275 // indirect
-	github.com/kost/dnstun v0.0.0-20230410034558-89876cf9d950 // indirect
-	github.com/miekg/dns v1.1.53 // indirect
-	github.com/rs/xid v1.4.0 // indirect
+	github.com/miekg/dns v1.1.54 // indirect
+	github.com/rs/xid v1.5.0 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
-	golang.org/x/crypto v0.7.0 // indirect
-	golang.org/x/mod v0.7.0 // indirect
-	golang.org/x/net v0.8.0 // indirect
-	golang.org/x/sys v0.6.0 // indirect
-	golang.org/x/tools v0.3.0 // indirect
-	google.golang.org/protobuf v1.26.0 // indirect
+	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/mod v0.10.0 // indirect
+	golang.org/x/net v0.10.0 // indirect
+	golang.org/x/sys v0.8.0 // indirect
+	golang.org/x/tools v0.9.1 // indirect
+	google.golang.org/protobuf v1.30.0 // indirect
 )
 
 replace (
