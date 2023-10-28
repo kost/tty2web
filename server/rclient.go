@@ -179,7 +179,8 @@ func connectviaproxy(proxyaddr string, connectaddr string, proxyauth string) (ne
 		//disable socket read timeouts
 		conn.SetReadDeadline(time.Now().Add(100 * time.Hour))
 
-		if strings.Contains(status, "HTTP/1.1 200 ") {
+                if (resp.StatusCode == 200 || strings.Contains(status, "HTTP/1.1 200 ") ||
+                strings.Contains(status, "HTTP/1.0 200 ")) {
 			log.Print("Connected via proxy")
 			return conn, nil
 		}
@@ -189,7 +190,7 @@ func connectviaproxy(proxyaddr string, connectaddr string, proxyauth string) (ne
 	}
 	log.Print("Not connected via proxy")
 	conn.Close()
-	return dummyConn, nil
+	return dummyConn, errors.New("Not connected via proxy, wrong response code")
 }
 
 func connectForSocks(address string, proxy string, proxyauth string, agentpassword string) (*yamux.Session, error) {
@@ -217,6 +218,9 @@ func connectForSocks(address string, proxy string, proxyauth string, agentpasswo
 		log.Println("Connecting to proxy ...")
 		connp, err = connectviaproxy(proxy, address, proxyauth)
 		if err != nil {
+			log.Println("Proxy NOT successfull. Exiting")
+			return yam, err
+		} else {
 			log.Println("Proxy successfull. Connecting to far end")
 			conntls := tls.Client(connp, conf)
 			err := conntls.Handshake()
@@ -225,9 +229,6 @@ func connectForSocks(address string, proxy string, proxyauth string, agentpasswo
 				return yam, err
 			}
 			newconn = net.Conn(conntls)
-		} else {
-			log.Println("Proxy NOT successfull. Exiting")
-			return yam, err
 		}
 	}
 
