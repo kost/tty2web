@@ -84,9 +84,16 @@ targz:
 shasums:
 	cd ${OUTPUT_DIR}/dist; sha256sum * > ./SHA256SUMS
 
+dokbuild:
+	docker run -it --rm -v $(PWD):/app golang:alpine /bin/sh -c 'apk add nodejs npm make file git && git config --global --add safe.directory /app && cd /app && make tools && make -B all && make rel && make relwin'
+
 rel:
 	mkdir -p release
 	CGO_ENABLED=0 gox -osarch="!darwin/386" -ldflags="-s -w -X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)" -output="release/{{.Dir}}_{{.OS}}_{{.Arch}}"
+
+relwin:
+	mkdir -p release
+	CGO_ENABLED=0 gox -osarch="windows/amd64" -ldflags="-X main.Version=$(VERSION) -X main.CommitID=$(GIT_COMMIT)" -output="release/{{.Dir}}_{{.OS}}_{{.Arch}}"
 
 draft:
 	ghr -draft v$(VERSION) release/
