@@ -35,13 +35,19 @@ func connectviaproxy(proxyaddr string, connectaddr string, proxyauth string) (ne
 	proxyauthstring := &proxyauth
 	var dummyConn net.Conn
 
-	if strings.Contains(*proxyauthstring, "/") {
-		domain = strings.Split(*proxyauthstring, "/")[0]
-		username = strings.Split(strings.Split(*proxyauthstring, "/")[1], ":")[0]
-		password = strings.Split(strings.Split(*proxyauthstring, "/")[1], ":")[1]
+	if proxyauth=="" {
+		username=""
+		password=""
+		domain=""
 	} else {
-		username = strings.Split(*proxyauthstring, ":")[0]
-		password = strings.Split(*proxyauthstring, ":")[1]
+		if strings.Contains(*proxyauthstring, "/") {
+			domain = strings.Split(*proxyauthstring, "/")[0]
+			username = strings.Split(strings.Split(*proxyauthstring, "/")[1], ":")[0]
+			password = strings.Split(strings.Split(*proxyauthstring, "/")[1], ":")[1]
+		} else {
+			username = strings.Split(*proxyauthstring, ":")[0]
+			password = strings.Split(*proxyauthstring, ":")[1]
+		}
 	}
 	log.Printf("Using domain %s with %s:%s", domain, username, password)
 
