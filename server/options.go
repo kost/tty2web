@@ -33,6 +33,7 @@ type Options struct {
 	DnsKey              string           `hcl:"dnskey" flagName:"dnskey" flagSName:"" flagDescribe:"Password/Key to use for DNS tunnel" default:""`
 	DnsDelay            string           `hcl:"dnsdelay" flagName:"dnsdelay" flagSName:"" flagDescribe:"Delay time between polling for DNS requests" default:"200ms"`
 	Listen              string           `hcl:"listen" flagName:"listen" flagSName:"" flagDescribe:"Listen for reverse connection agents (ex. 0.0.0.0:4444)" default:""`
+	AgentTLS            bool             `hcl:"agenttls" flagName:"agenttls" flagDescribe:"Enable TLS for listening for agents and clients itself" default:"false"`
 	ListenCert          string           `hcl:"listencert" flagName:"listencert" flagSName:"" flagDescribe:"Certificate and key for listen server (ex. mycert)" default:""`
 	Server              string           `hcl:"server" flagName:"server" flagSName:"" flagDescribe:"Server for forwarding reverse connections (ex. 127.0.0.1:6000)" default:"127.0.0.1:6000"`
 	Password            string           `hcl:"password" flagName:"password" flagSName:"" flagDescribe:"Password for reverse server connection" default:""`

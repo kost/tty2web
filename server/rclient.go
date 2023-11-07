@@ -199,7 +199,7 @@ func connectviaproxy(proxyaddr string, connectaddr string, proxyauth string) (ne
 	return dummyConn, errors.New("Not connected via proxy, wrong response code")
 }
 
-func connectForSocks(address string, proxy string, proxyauth string, agentpassword string) (*yamux.Session, error) {
+func connectForSocks(address string, proxy string, proxyauth string, agentpassword string, enabletls bool) (*yamux.Session, error) {
 	var err error
 	var yam *yamux.Session
 
@@ -214,10 +214,13 @@ func connectForSocks(address string, proxy string, proxyauth string, agentpasswo
 	//var conn tls.Conn
 	if proxy == "" {
 		log.Println("Connecting to far end")
-		//conn, err = net.Dial("tcp", address)
-		conn, err = tls.Dial("tcp", address, conf)
+		if enabletls {
+			conn, err = tls.Dial("tcp", address, conf)
+		} else {
+			conn, err = net.Dial("tcp", address)
+		}
 		if err != nil {
-			log.Printf("Cannot connect to %s: %s", address, err)
+			log.Printf("Cannot connect to %s: %s (TLS: %t)", address, err, enabletls)
 			return yam, err
 		}
 	} else {
@@ -227,14 +230,19 @@ func connectForSocks(address string, proxy string, proxyauth string, agentpasswo
 			log.Println("Proxy NOT successfull. Exiting")
 			return yam, err
 		} else {
-			log.Println("Proxy successfull. Connecting to far end")
-			conntls := tls.Client(connp, conf)
-			err := conntls.Handshake()
-			if err != nil {
-				log.Printf("Error connect: %v", err)
-				return yam, err
+			log.Printf("Proxy successfull. Connecting to far end (TLS: %t)", enabletls)
+			if enabletls {
+				conntls := tls.Client(connp, conf)
+				err := conntls.Handshake()
+				if err != nil {
+					log.Printf("Error connect: %v", err)
+					return yam, err
+				}
+				newconn = net.Conn(conntls)
+			} else {
+				newconn = connp
 			}
-			newconn = net.Conn(conntls)
+
 		}
 	}
 
@@ -244,7 +252,6 @@ func connectForSocks(address string, proxy string, proxyauth string, agentpasswo
 		//time.Sleep(time.Second * 1)
 		session, err = yamux.Server(conn, nil)
 	} else {
-
 		//log.Print(conntls)
 		newconn.Write([]byte(agentpassword))
 		time.Sleep(time.Second * 1)

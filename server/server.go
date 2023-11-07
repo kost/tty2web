@@ -192,7 +192,7 @@ func (server *Server) Run(ctx context.Context, options ...RunOption) error {
 			}()
 		} else {
 			go func() {
-				session, err = connectForSocks(server.options.Connect,server.options.Proxy, server.options.ProxyAuth, server.options.Password)
+				session, err = connectForSocks(server.options.Connect,server.options.Proxy, server.options.ProxyAuth, server.options.Password, server.options.AgentTLS)
 				if err != nil {
 					log.Printf("Error creating sessions %s", err)
 					srvErr <- err
