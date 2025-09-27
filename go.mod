@@ -1,6 +1,6 @@
 module github.com/kost/tty2web
 
-go 1.18
+go 1.23.0
 
 require (
 	github.com/NYTimes/gziphandler v1.1.1
@@ -16,7 +16,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/urfave/cli/v2 v2.25.7
 	github.com/yudai/hcl v0.0.0-20151013225006-5fa2393b3552
-	golang.org/x/crypto v0.14.0
+	golang.org/x/crypto v0.35.0
 )
 
 require (
@@ -32,8 +32,8 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/xrash/smetrics v0.0.0-20201216005158-039620a65673 // indirect
 	golang.org/x/mod v0.14.0 // indirect
-	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/sys v0.14.0 // indirect
+	golang.org/x/net v0.21.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/tools v0.14.0 // indirect
 	google.golang.org/protobuf v1.33.0 // indirect
 )
