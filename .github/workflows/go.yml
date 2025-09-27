@@ -26,13 +26,13 @@ jobs:
       with:
         node-version: '20' # you can change this to the version you need
 
-    - name: Build
+    - name: Build JS asset
       run: make asset
 
-    - name: Build
+    - name: Build with make
       run: make
 
-    - name: Build
+    - name: Build with go 
       run: go build -v ./...
 
     - name: Test
