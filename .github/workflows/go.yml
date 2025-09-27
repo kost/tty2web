@@ -37,3 +37,9 @@ jobs:
 
     - name: Test
       run: go test -v ./...
+
+    - name: Setup release tools
+      run: make tools
+
+    - name: Make release
+      run: make rel
