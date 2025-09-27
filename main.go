@@ -110,7 +110,7 @@ func main() {
 		if args.Len() == 0 {
 			msg := "Error: No command given."
 			cli.ShowAppHelp(c)
-			exit(fmt.Errorf(msg), 1)
+			exit(fmt.Errorf("%s", msg), 1)
 		}
 
 		if c.Bool("help") {

@@ -130,8 +130,8 @@ func (server *Server) Run(ctx context.Context, options ...RunOption) error {
 	if server.options.EnableTLS {
 		crtFile := homedir.Expand(server.options.TLSCrtFile)
 		keyFile := homedir.Expand(server.options.TLSKeyFile)
-		log.Printf("TLS crt file: " + crtFile)
-		log.Printf("TLS key file: " + keyFile)
+		log.Printf("TLS crt file: %s",crtFile)
+		log.Printf("TLS key file: %s",keyFile)
 		cer, err := tls.LoadX509KeyPair(crtFile,keyFile)
 		if err != nil {
 			log.Printf("Error loading TLS key and crt file %s and %s: %v. Generating random one!", crtFile, keyFile, err)
