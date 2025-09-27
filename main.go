@@ -46,14 +46,14 @@ func main() {
 	app.Flags = append(
 		cliFlags,
 		&cli.StringFlag{
-			Name:   "config",
-			Value:  "~/.tty2web",
-			Usage:  "Config file path",
+			Name:    "config",
+			Value:   "~/.tty2web",
+			Usage:   "Config file path",
 			EnvVars: []string{"TTY2WEB_CONFIG"},
 		},
 		&cli.BoolFlag{
-			Name:	"help",
-			Usage:	"Displays help",
+			Name:  "help",
+			Usage: "Displays help",
 		},
 	)
 
@@ -71,6 +71,7 @@ func main() {
 		utils.ApplyFlags(cliFlags, flagMappings, c, appOptions, backendOptions)
 
 		appOptions.EnableBasicAuth = c.IsSet("credential")
+		appOptions.CredentialBcrypt = c.IsSet("credential-bcrypt")
 		appOptions.EnableTLSClientAuth = c.IsSet("tls-ca-crt")
 
 		err = appOptions.Validate()
@@ -79,28 +80,28 @@ func main() {
 			exit(err, 6)
 		}
 
-		if appOptions.Dns!="" {
+		if appOptions.Dns != "" {
 			if appOptions.DnsKey == "" {
-				appOptions.DnsKey=GenerateKey()
+				appOptions.DnsKey = GenerateKey()
 				log.Printf("No password specified, generated following (recheck if same on both sides): %s", appOptions.DnsKey)
 			}
 			if len(appOptions.DnsKey) != 64 {
 				fmt.Fprintf(os.Stderr, "Specified key of incorrect size for DNS (should be 64 in hex)\n")
 				os.Exit(1)
 			}
-			if appOptions.DnsListen!="" {
+			if appOptions.DnsListen != "" {
 				go func() {
-				log.Fatal(ServeDNS (appOptions.DnsListen,appOptions.Dns, appOptions.Server, appOptions.DnsKey, appOptions.DnsDelay))
+					log.Fatal(ServeDNS(appOptions.DnsListen, appOptions.Dns, appOptions.Server, appOptions.DnsKey, appOptions.DnsDelay))
 				}()
 				wait4Signals()
 				return nil
 			}
 		}
 
-		if appOptions.Listen!="" {
+		if appOptions.Listen != "" {
 			log.Printf("Listening for reverse connection %s", appOptions.Listen)
 			go func() {
-			log.Fatal(listenForAgents(appOptions.Verbose, appOptions.AgentTLS, appOptions.Listen, appOptions.Server, appOptions.ListenCert, appOptions.Password))
+				log.Fatal(listenForAgents(appOptions.Verbose, appOptions.AgentTLS, appOptions.Listen, appOptions.Server, appOptions.ListenCert, appOptions.Password))
 			}()
 			wait4Signals()
 			return nil
@@ -137,7 +138,6 @@ func main() {
 			exit(err, 5)
 		}
 
-
 		log.Printf("tty2web is starting with command: %s", strings.Join(args.Slice(), " "))
 
 		ctx, cancel := context.WithCancel(context.Background())
@@ -170,10 +170,10 @@ func wait4Signals() {
 	c := make(chan os.Signal)
 	signal.Notify(c, os.Interrupt)
 	select {
-        case sig := <-c:
-            fmt.Printf("Got %s signal. Aborting...\n", sig)
-            os.Exit(1)
-        }
+	case sig := <-c:
+		fmt.Printf("Got %s signal. Aborting...\n", sig)
+		os.Exit(1)
+	}
 }
 
 func waitSignals(errs chan error, cancel context.CancelFunc, gracefullCancel context.CancelFunc) error {

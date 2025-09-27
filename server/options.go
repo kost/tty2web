@@ -10,6 +10,7 @@ type Options struct {
 	PermitWrite         bool             `hcl:"permit_write" flagName:"permit-write" flagSName:"w" flagDescribe:"Permit clients to write to the TTY (BE CAREFUL)" default:"false"`
 	EnableBasicAuth     bool             `hcl:"enable_basic_auth" default:"false"`
 	Credential          string           `hcl:"credential" flagName:"credential" flagSName:"c" flagDescribe:"Credential for Basic Authentication (ex: user:pass, default disabled)" default:""`
+	CredentialBcrypt    bool             `hcl:"credential_bcrypt" flagName:"credential-bcrypt" flagDescribe:"Treat credential as a bcrypt hash" default:"false"`
 	EnableRandomUrl     bool             `hcl:"enable_random_url" flagName:"random-url" flagSName:"r" flagDescribe:"Add a random string to the URL" default:"false"`
 	EnableWebGL         bool             `hcl:"enable_webgl" flagName:"enable-webgl" flagDescribe:"Enable WebGL renderer" default:"true"`
 	All                 bool             `hcl:"all" flagName:"all" flagDescribe:"Turn on all features: download /, upload /, api, regeorg, ..." default:"false"`
