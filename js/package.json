@@ -4,7 +4,7 @@
         "@babel/core": "^7.7.7",
         "babel-preset-env": "^1.7.0",
         "license-loader": "^0.7.0",
-        "terser-webpack-plugin": "^5.3.6",
+        "terser-webpack-plugin": "^5.4.0",
         "ts-loader": "^9.4.2",
         "typescript": "^3.7.3",
         "webpack": "^5.105.2",
